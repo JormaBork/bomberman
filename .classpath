@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Jorma/Studium/Semester 2/Programmierung 2/Tutorial-Swing/Tutorial-Swing/TutorialSwing_OceanApp_v1/lib/jgoodies-common-1.8.0.jar"/>
+	<classpathentry kind="lib" path="C:/Jorma/Studium/Semester 2/Programmierung 2/Tutorial-Swing/Tutorial-Swing/TutorialSwing_OceanApp_v1/lib/jgoodies-forms-1.8.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
