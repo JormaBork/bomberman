@@ -25,6 +25,9 @@ public class BombermanGui extends JFrame {
 	/**
 	 * 
 	 */
+	
+	//KOMMENTARRRRRRRRRRR
+	
 	private JPanel contentPane;
 	private JTextField tHeight;
 	public static BombermanGui frame;
