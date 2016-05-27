@@ -18,6 +18,9 @@ public class BombermanBorkKnebel {
 		/**
 		 * 
 		 */
+		
+		//Komentaaaarrrrrrrrrrrrrr
+		
 		private static final long serialVersionUID = 1L;
 		Point playerPosition = new Point(25, 25);
 		Point goldPosition = new Point(6, 6);
