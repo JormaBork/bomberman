@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 public class BombermanBorkKnebel {
 	private static class bombermanGui extends JPanel implements KeyListener {
 
-//		Comment, Kommentarrrr
 		
 		private static final long serialVersionUID = 1L;
 		Point playerPosition = new Point(25, 25);
