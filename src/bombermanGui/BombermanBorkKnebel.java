@@ -12,11 +12,17 @@ import java.util.Timer;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class BombermanBorkKnebel {
 	private static class bombermanGui extends JPanel implements KeyListener {
 
-//		testcommit 10:43
+//		COM
 		
 		private static final long serialVersionUID = 1L;
 		Point playerPosition = new Point(25, 25);
@@ -179,7 +185,19 @@ public class BombermanBorkKnebel {
 	public static void main(String[] args) {
 		JFrame f = new JFrame("BOMBERMAN");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.add(new bombermanGui());
+		f.getContentPane().add(new bombermanGui());
+		
+		JPanel controlPanel = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) controlPanel.getLayout();
+		f.getContentPane().add(controlPanel, BorderLayout.SOUTH);
+		
+		JButton btnStartGame = new JButton("Start Game");
+		btnStartGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnStartGame.setHorizontalAlignment(SwingConstants.LEFT);
+		controlPanel.add(btnStartGame);
 		f.pack();
 		f.setVisible(true);
 	}
