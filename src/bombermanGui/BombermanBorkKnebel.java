@@ -30,8 +30,9 @@ public class BombermanBorkKnebel {
 		Point doorPosition = new Point(0, 5);
 		Point[] snakePositions = { new Point(30, 2), null, null, null, null };
 		Point wallPosition = new Point();
-		BufferedImage wallImage, woodImage, tntImage, creeperImage;
+		BufferedImage wallImage, woodImage, tntImage;
 		BufferedImage imageDestroyable;
+		Player player1, player2;
 		int travelPixel = 5;
 		boolean rich = false;
 		boolean end = false;
@@ -41,11 +42,16 @@ public class BombermanBorkKnebel {
 			setPreferredSize(new Dimension(WIDTH, HEIGHT));
 			setFocusable(true);
 			addKeyListener(this);
+			
+			player1 = new Player("player1", 25, 25, "creeper.png");
+			player1.getPlayerLabel();
+//			player2 = new Player("player2", 75, 75, "creeper.png");
 			try {
 				wallImage = ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("wall.png"));
 				woodImage = ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("wood.png"));
 				tntImage = ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("tnt.png"));
-				creeperImage = ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("creeper.png"));
+
+//				creeperImage = ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("creeper.png"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -82,7 +88,7 @@ public class BombermanBorkKnebel {
 						c = '$';
 
 					if (playerPosition.equals(p)) {
-						g.drawImage(creeperImage, x, y, 20, 20, null);
+						g.drawImage(player1.getImg(), x, y, 20, 20, null);
 					}
 					// g.hitclip für collisionsabfrage möglich?
 					if (g.hitClip(50, 125, 25, 25))
