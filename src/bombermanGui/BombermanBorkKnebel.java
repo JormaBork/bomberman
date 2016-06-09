@@ -44,7 +44,8 @@ public class BombermanBorkKnebel {
 			addKeyListener(this);
 			
 			player1 = new Player("player1", 25, 25, "creeper.png");
-			player1.getPlayerLabel();
+			add(player1.getPlayerLabel());
+			this.repaint(10);
 //			player2 = new Player("player2", 75, 75, "creeper.png");
 			try {
 				wallImage = ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("wall.png"));
@@ -87,9 +88,9 @@ public class BombermanBorkKnebel {
 					if (tntPOS.equals(p))
 						c = '$';
 
-					if (playerPosition.equals(p)) {
-						g.drawImage(player1.getImg(), x, y, 20, 20, null);
-					}
+//					if (playerPosition.equals(p)) {
+//						g.drawImage(player1.getImg(), x, y, 20, 20, null);
+//					}
 					// g.hitclip für collisionsabfrage möglich?
 					if (g.hitClip(50, 125, 25, 25))
 

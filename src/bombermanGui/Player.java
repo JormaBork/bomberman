@@ -14,10 +14,11 @@ public class Player extends JComponent {
 	
 	private String name;
 	private int x,y;
-	private BufferedImage img;
+	private String img;
 	private final boolean destroyable = true;
 	private JLabel playerLabel;
 	private Graphics g;
+	private ImageIcon playerIcon;
 //	private String playerImage="";
 	
 	
@@ -27,22 +28,17 @@ public class Player extends JComponent {
 		this.y = y;
 		this.x = x;
 		
-		try {
-			BufferedImage playerImage = ImageIO.read(new File(img));
-//            ImageIcon playerIcon = new ImageIcon(playerImage);
-            
-			this.img = playerImage;
+//			BufferedImage playerImage = ImageIO.read(new File(img));
+            playerIcon = new ImageIcon(img);
 			this.playerLabel = new JLabel();
-			playerLabel.paintComponents(g);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//			playerLabel.paintComponents(g);
+			playerLabel.setIcon(playerIcon);
 	}
+	
 	@Override 
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
-		g.drawImage(this.img, x, y, null);
+//		g.drawImage(this.img, x, y, null);
 	}
 	public String getName() {
 		return name;
@@ -62,12 +58,15 @@ public class Player extends JComponent {
 	public void setY(int y) {
 		this.y = y;
 	}
-	public BufferedImage getImg() {
-		return img;
+
+	public ImageIcon getPlayerIcon() {
+		return playerIcon;
 	}
-	public void setImg(BufferedImage img) {
-		this.img = img;
+
+	public void setPlayerIcon(ImageIcon playerIcon) {
+		this.playerIcon = playerIcon;
 	}
+
 	public JLabel getPlayerLabel() {
 		return playerLabel;
 	}
