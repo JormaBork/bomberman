@@ -1,6 +1,8 @@
 package bombermanGui;
 
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -10,15 +12,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-public class Player extends JComponent {
+public class Player extends Thread implements KeyListener {
 	
 	private String name;
 	private int x,y;
 	private String img;
+	private BufferedImage playerImage;
 	private final boolean destroyable = true;
 	private JLabel playerLabel;
 	private Graphics g;
 	private ImageIcon playerIcon;
+	boolean end = false;
+	int travelPixel = 5;
 //	private String playerImage="";
 	
 	
@@ -28,24 +33,30 @@ public class Player extends JComponent {
 		this.y = y;
 		this.x = x;
 		
-//			BufferedImage playerImage = ImageIO.read(new File(img));
-            playerIcon = new ImageIcon(img);
-			this.playerLabel = new JLabel();
-//			playerLabel.paintComponents(g);
-			playerLabel.setIcon(playerIcon);
+		this.img = img;
+		
+		
+		try {
+			playerImage = ImageIO.read(new File(img));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+            //playerIcon = new ImageIcon(img);
+			//this.playerLabel = new JLabel();
+			//playerLabel.paintComponents(g);
+			//playerLabel.setIcon(playerIcon);
 	}
 	
-	@Override 
-	protected void paintComponent(Graphics g){
-		super.paintComponent(g);
-//		g.drawImage(this.img, x, y, null);
+	@Override
+	public void run() {
+		
 	}
-	public String getName() {
-		return name;
+	
+	public BufferedImage getImg(){
+		return playerImage;
 	}
-	public void setName(String name) {
-		this.name = name;
-	}
+	
 	public int getX() {
 		return x;
 	}
@@ -82,4 +93,37 @@ public class Player extends JComponent {
 	public boolean isDestroyable() {
 		return destroyable;
 	}
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+
+		// Tasteneingabe und Spielerposition verändern
+		switch (e.getKeyCode()) {
+		case KeyEvent.VK_UP:
+			this.setY ( Math.max(0, this.getY()- travelPixel) );
+			break;
+		case KeyEvent.VK_DOWN:
+			this.setY ( Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - travelPixel, this.getY() + travelPixel) );
+			break;
+		case KeyEvent.VK_LEFT:
+			this.setX ( Math.max(0, this.getX() - travelPixel) );
+			break;
+		case KeyEvent.VK_RIGHT:
+			this.setX ( Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - travelPixel, this.getX() + travelPixel) );
+			break;
+		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

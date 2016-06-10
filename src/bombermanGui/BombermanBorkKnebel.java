@@ -8,7 +8,6 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Timer;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,11 +15,16 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class BombermanBorkKnebel {
-	private static class bombermanGui extends JPanel implements KeyListener {
+	
+	public static bombermanGui pBombermanGui;
+	
+	public static class bombermanGui extends JPanel {
 
 //		COM
 		
@@ -36,17 +40,19 @@ public class BombermanBorkKnebel {
 		int travelPixel = 5;
 		boolean rich = false;
 		boolean end = false;
-		final int WIDTH = 775, HEIGHT = 375;
+		public final int WIDTH = 775, HEIGHT = 375;
 
 		bombermanGui() {
 			setPreferredSize(new Dimension(WIDTH, HEIGHT));
 			setFocusable(true);
-			addKeyListener(this);
 			
-			player1 = new Player("player1", 25, 25, "creeper.png");
-			add(player1.getPlayerLabel());
-			this.repaint(10);
-//			player2 = new Player("player2", 75, 75, "creeper.png");
+			player1 = new Player("player1", 25, 25, "img/creeper.png");
+			player1.start();
+			//player2 = new Player("player2", 75, 75, "img/creeper.png");
+			//player2.start();
+
+			addKeyListener(player1);
+			
 			try {
 				wallImage = ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("wall.png"));
 				woodImage = ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("wood.png"));
@@ -61,6 +67,10 @@ public class BombermanBorkKnebel {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
+			
+			g.drawImage(player1.getImg(), player1.getX(), player1.getY(), 20, 20, null);
+			g.drawImage(player2.getImg(), player2.getX(), player2.getY(), 20, 20, null);
+
 			// Figuren zeichnen
 			g.drawImage(woodImage, 50, 25, 25, 25, null);
 			g.drawImage(tntImage, 50, 75, 25, 25, null);
@@ -88,9 +98,6 @@ public class BombermanBorkKnebel {
 					if (tntPOS.equals(p))
 						c = '$';
 
-//					if (playerPosition.equals(p)) {
-//						g.drawImage(player1.getImg(), x, y, 20, 20, null);
-//					}
 					// g.hitclip für collisionsabfrage möglich?
 					if (g.hitClip(50, 125, 25, 25))
 
@@ -117,82 +124,58 @@ public class BombermanBorkKnebel {
 			}
 		}
 
-		@Override
-		public void keyReleased(KeyEvent e) {
-			if (end)
-				return;
-			// Tasteneingabe und Spielerposition verÃ¤ndern
-			switch (e.getKeyCode()) {
-			case KeyEvent.VK_UP:
-				playerPosition.y = Math.max(0, playerPosition.y - travelPixel);
-				break;
-			case KeyEvent.VK_DOWN:
-				playerPosition.y = Math.min(HEIGHT - travelPixel, playerPosition.y + travelPixel);
-				break;
-			case KeyEvent.VK_LEFT:
-				playerPosition.x = Math.max(0, playerPosition.x - travelPixel);
-				break;
-			case KeyEvent.VK_RIGHT:
-				playerPosition.x = Math.min(WIDTH - travelPixel, playerPosition.x + travelPixel);
-				break;
-			}
-			// Schlange bewegt sich Richtung Spieler
-			// Point snakeHead = new Point( snakePositions[snakeIdx].x,
-			// snakePositions[snakeIdx].y );
-			//
-			// if ( playerPosition.x < snakeHead.x )
-			// snakeHead.x--;
-			// else if ( playerPosition.x > snakeHead.x )
-			// snakeHead.x++;
-			// if ( playerPosition.y < snakeHead.y )
-			// snakeHead.y--;
-			// else if ( playerPosition.y > snakeHead.y )
-			// snakeHead.y++;
-			//
-			// snakeIdx = (snakeIdx + 1) % snakePositions.length;
-			// snakePositions[snakeIdx] = snakeHead;
-			repaint();
-		}
+//		@Override
+//		public void keyPressed(KeyEvent e) {
+//			if (end)
+//				return;
+//			// Tasteneingabe und Spielerposition verÃ¤ndern
+//			switch (e.getKeyCode()) {
+//			case KeyEvent.VK_UP:
+//				player1.setY ( Math.max(0, player1.getY()- travelPixel) );
+//				break;
+//			case KeyEvent.VK_DOWN:
+//				player1.setY ( Math.min(HEIGHT - travelPixel, player1.getY() + travelPixel) );
+//				break;
+//			case KeyEvent.VK_LEFT:
+//				player1.setX ( Math.max(0, player1.getX() - travelPixel) );
+//				break;
+//			case KeyEvent.VK_RIGHT:
+//				player1.setX ( Math.min(WIDTH - travelPixel, player1.getX() + travelPixel) );
+//				break;
+//			case KeyEvent.VK_W:
+//				player2.setY ( Math.max(0, player2.getY()- travelPixel) );
+//				break;
+//			case KeyEvent.VK_A:
+//				player2.setY ( Math.min(HEIGHT - travelPixel, player2.getY() + travelPixel) );
+//				break;
+//			case KeyEvent.VK_S:
+//				player2.setX ( Math.max(0, player2.getX() - travelPixel) );
+//				break;
+//			case KeyEvent.VK_D:
+//				player2.setX ( Math.min(WIDTH - travelPixel, player2.getX() + travelPixel) );
+//				break;
+//			}
+//		}
+//
+//		@Override
+//		public void keyTyped(KeyEvent e) {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//
+//		@Override
+//		public void keyReleased(KeyEvent e) {
+//			// TODO Auto-generated method stub
+//			
+//		}
 
-		@Override
-		public void keyTyped(KeyEvent e) {
-		}
-
-		@Override
-		public void keyPressed(KeyEvent e) {
-			if (end)
-				return;
-			// Tasteneingabe und Spielerposition verÃ¤ndern
-			switch (e.getKeyCode()) {
-			case KeyEvent.VK_UP:
-				playerPosition.y = Math.max(0, playerPosition.y - travelPixel);
-				break;
-			case KeyEvent.VK_DOWN:
-				playerPosition.y = Math.min(HEIGHT - travelPixel, playerPosition.y + travelPixel);
-				break;
-			case KeyEvent.VK_LEFT:
-				playerPosition.x = Math.max(0, playerPosition.x - travelPixel);
-				break;
-			case KeyEvent.VK_RIGHT:
-				playerPosition.x = Math.min(WIDTH - travelPixel, playerPosition.x + travelPixel);
-				break;
-			}
-			repaint();
-		}
-
-		// Timer timer = new Timer (1, new ActionListener() {
-		// @Override
-		// public void actionPerformed(ActionEvent e){
-		// myTestPanel.repaint();
-		// }
-		// });
-		// timer.start();
 	}
 
 	public static void main(String[] args) {
 		JFrame f = new JFrame("BOMBERMAN");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.getContentPane().add(new bombermanGui());
+		pBombermanGui = new bombermanGui();
+		f.getContentPane().add(pBombermanGui);
 		
 		JPanel controlPanel = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) controlPanel.getLayout();
@@ -207,5 +190,14 @@ public class BombermanBorkKnebel {
 		controlPanel.add(btnStartGame);
 		f.pack();
 		f.setVisible(true);
+		
+		 Timer timer = new Timer (1, new ActionListener() {
+		 @Override
+		 public void actionPerformed(ActionEvent e){
+			 pBombermanGui.repaint();
+		 }
+		 });
+		 timer.start();		
+		
 	}
 }
