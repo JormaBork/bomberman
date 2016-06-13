@@ -3,12 +3,12 @@ package bombermanGui;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -18,8 +18,9 @@ import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
-
 public class BombermanBorkKnebel {
 	
 	public static bombermanGui pBombermanGui;
@@ -36,6 +37,7 @@ public class BombermanBorkKnebel {
 		Point wallPosition = new Point();
 		BufferedImage wallImage, woodImage, tntImage;
 		BufferedImage imageDestroyable;
+		public static int dimension = 25;
 		Player player1, player2;
 		int travelPixel = 5;
 		boolean rich = false;
@@ -46,18 +48,20 @@ public class BombermanBorkKnebel {
 			setPreferredSize(new Dimension(WIDTH, HEIGHT));
 			setFocusable(true);
 			
-			player1 = new Player("player1", 25, 25, "img/creeper.png");
-			player1.start();
+//			player1 = new Player("player1", 25, 25, "img/creeper.png");
+//			player1.start();
 			//player2 = new Player("player2", 75, 75, "img/creeper.png");
 			//player2.start();
 
-			addKeyListener(player1);
-			
+			generatePlayer1();
 			try {
-				wallImage = ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("wall.png"));
-				woodImage = ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("wood.png"));
-				tntImage = ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("tnt.png"));
-
+				wallImage = ImageIO.read((ImageInputStream) ImageIO.read(new File("img/wall.png")));
+				woodImage = ImageIO.read((ImageInputStream) ImageIO.read(new File("img/wood.png")));
+				tntImage = ImageIO.read((ImageInputStream) ImageIO.read(new File("img/tnt.png")));
+//				wallImage = ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("img/wall.png"));
+//				woodImage = ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("img/wood.png"));
+//				tntImage = ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("img/tnt.png"));
+//				(ImageInputStream) ImageIO.read(new File(
 //				creeperImage = ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("creeper.png"));
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -123,6 +127,52 @@ public class BombermanBorkKnebel {
 				tntPOS.setLocation(-1, -1);
 			}
 		}
+		
+		private void generatePlayer1() {
+			player1 = new Player("peter", 25, 25, "creeper.png");
+//			spieler1.setFarbe(farbe1);
+			player1.setLocation(dimension, 25);
+			BombermanBorkKnebel.pBombermanGui.addKeyListener(new KeyAdapter() {
+
+				public void keyTyped(KeyEvent event) {
+//					if (event.getKeyChar() == ' ')
+//						player1.bombeLegen(player1.getLocation().x,
+//								player1.getLocation().y);
+				}
+
+				public void keyPressed(KeyEvent event) {
+//					if (Spiel.uhrzeit.isRunning()) {
+						if (event.getKeyChar() == 'a'
+								&& (player1.getLocation().y + 15) % 25 == 0) {
+							player1.directory = 1;
+						}
+						if (event.getKeyChar() == 's'
+								&& player1.getLocation().x % 25 == 0) {
+							player1.directory = 4;
+						}
+						if (event.getKeyChar() == 'w'
+								&& player1.getLocation().x % 25 == 0) {
+							player1.directory = 2;
+						}
+						if (event.getKeyChar() == 'd'
+								&& (player1.getLocation().y + 15) % 25 == 0) {
+							player1.directory = 3;
+						}
+//						player1.stop = false;
+//					}
+				}
+
+				public void keyReleased(KeyEvent event) {
+//					if (event.getKeyChar() == 'a' || event.getKeyChar() == 's'
+//							|| event.getKeyChar() == 'w'
+//							|| event.getKeyChar() == 'd') {
+//						player1.stop = true;
+//					}
+				}
+			});
+			add(player1);
+			new Thread(player1, "Spieler 1").start();
+		}
 
 //		@Override
 //		public void keyPressed(KeyEvent e) {
@@ -183,6 +233,7 @@ public class BombermanBorkKnebel {
 		
 		JButton btnStartGame = new JButton("Start Game");
 		btnStartGame.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
@@ -197,7 +248,26 @@ public class BombermanBorkKnebel {
 			 pBombermanGui.repaint();
 		 }
 		 });
-		 timer.start();		
+		 timer.start();	
 		
 	}
 }
+
+
+/**
+ * class MyContainer {
+ * List <MyObjectY> myObjects = new ... myOBjects.json
+ * PlayerObject playerObject = new ...playerObject.json
+ * }
+ * 
+ * class MyFrame extends JFrame {
+ * myFrame(){
+ * MyContainer myContainer = new MyContainer();
+ * myContainer.myObjects.add();
+ * myContainer.playerObject.start();
+ * gson.toJson("myContainer.json", myContainer);
+ * this.addkeyListener(PlayerObject1);
+ * this.addkeyListener(PlayerObject2);
+ * }
+ * }
+ * */
