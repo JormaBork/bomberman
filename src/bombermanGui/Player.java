@@ -23,18 +23,19 @@ public class Player extends Thread implements KeyListener {
 	private Graphics g;
 	private ImageIcon playerIcon;
 	boolean end = false;
-	int travelPixel = 5;
+	int stepSize = 5;
+	int whichPlayer;
 //	private String playerImage="";
 	
 	
-	public Player(String name, int x,int y, String img) {
+	public Player(String name, int x,int y, String img, int whichPlayer) {
 		super();
 		this.name = name;
 		this.y = y;
 		this.x = x;
 		
 		this.img = img;
-		
+		this.whichPlayer = whichPlayer;
 		
 		try {
 			playerImage = ImageIO.read(new File(img));
@@ -97,20 +98,38 @@ public class Player extends Thread implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 
+		if(this.whichPlayer ==1){
 		// Tasteneingabe und Spielerposition verändern
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_UP:
-			this.setY ( Math.max(0, this.getY()- travelPixel) );
+			this.setY ( Math.max(0, this.getY()- stepSize) );
 			break;
 		case KeyEvent.VK_DOWN:
-			this.setY ( Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - travelPixel, this.getY() + travelPixel) );
+			this.setY ( Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getY() + stepSize) );
 			break;
 		case KeyEvent.VK_LEFT:
-			this.setX ( Math.max(0, this.getX() - travelPixel) );
+			this.setX ( Math.max(0, this.getX() - stepSize) );
 			break;
 		case KeyEvent.VK_RIGHT:
-			this.setX ( Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - travelPixel, this.getX() + travelPixel) );
+			this.setX ( Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getX() + stepSize) );
 			break;
+		}
+		}
+		else if(this.whichPlayer == 2){
+			switch (e.getKeyCode()) {
+			case KeyEvent.VK_W:
+				this.setY ( Math.max(0, this.getY()- stepSize) );
+				break;
+			case KeyEvent.VK_S:
+				this.setY ( Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getY() + stepSize) );
+				break;
+			case KeyEvent.VK_A:
+				this.setX ( Math.max(0, this.getX() - stepSize) );
+				break;
+			case KeyEvent.VK_D:
+				this.setX ( Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getX() + stepSize) );
+				break;
+			}			
 		}
 	}
 

@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -30,14 +31,14 @@ public class BombermanBorkKnebel {
 		
 		private static final long serialVersionUID = 1L;
 		Point playerPosition = new Point(25, 25);
+		ArrayList<Point> wallPositionList;
 		Point tntPOS = new Point(6, 6);
-		Point doorPosition = new Point(0, 5);
+//		Point doorPosition = new Point(0, 5);
 		Point[] snakePositions = { new Point(30, 2), null, null, null, null };
 		Point wallPosition = new Point();
 		BufferedImage wallImage, woodImage, tntImage;
 		BufferedImage imageDestroyable;
 		Player player1, player2;
-		int travelPixel = 5;
 		boolean rich = false;
 		boolean end = false;
 		public final int WIDTH = 775, HEIGHT = 375;
@@ -46,12 +47,13 @@ public class BombermanBorkKnebel {
 			setPreferredSize(new Dimension(WIDTH, HEIGHT));
 			setFocusable(true);
 			
-			player1 = new Player("player1", 25, 25, "img/creeper.png");
+			player1 = new Player("player1", 25, 25, "img/creeper.png", 1);
 			player1.start();
-			//player2 = new Player("player2", 75, 75, "img/creeper.png");
-			//player2.start();
+			player2 = new Player("player2", 75, 75, "img/creeper.png", 2);
+			player2.start();
 
 			addKeyListener(player1);
+			addKeyListener(player2);
 			
 			try {
 				wallImage = ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("wall.png"));
@@ -79,15 +81,20 @@ public class BombermanBorkKnebel {
 			for (int y = 0; y < HEIGHT; y += 25) {
 				g.drawImage(wallImage, 0, y, null);
 				g.drawImage(wallImage, WIDTH - 25, y, null);
+//				wallPositionList.add(new Point(0, y));
+//				wallPositionList.add(new Point(WIDTH - 25, y));
 			}
 			for (int x = 0; x < WIDTH; x += 25) {
 				g.drawImage(wallImage, x, 0, null);
 				g.drawImage(wallImage, x, HEIGHT - 25, null);
+//				wallPositionList.add(new Point(x, 0));
+//				wallPositionList.add(new Point(x, HEIGHT - 25));
 			}
 			// Die Wände innerhalb des Spielfeldes
 			for (int y = 0; y < HEIGHT; y += 50) {
 				for (int x = 0; x < WIDTH; x += 50) {
 					g.drawImage(wallImage, x, y, null);
+//					wallPositionList.add(new Point(x, y));
 				}
 			}
 			for (int y = 0; y < HEIGHT; y++) {
@@ -108,16 +115,16 @@ public class BombermanBorkKnebel {
 				}
 			}
 			// Status aktualisieren
-			if (rich && playerPosition.equals(doorPosition)) {
-				System.out.println("Gewonnen!");
-				end = true;
-				return;
-			}
-			if (Arrays.asList(snakePositions).contains(playerPosition)) {
-				System.out.println("ZZZZZZZ. Die Schlage hat dich!");
-				end = true;
-				return;
-			}
+//			if (rich && playerPosition.equals(doorPosition)) {
+//				System.out.println("Gewonnen!");
+//				end = true;
+//				return;
+//			}
+//			if (Arrays.asList(snakePositions).contains(playerPosition)) {
+//				System.out.println("ZZZZZZZ. Die Schlage hat dich!");
+//				end = true;
+//				return;
+//			}
 			if (playerPosition.equals(tntPOS)) {
 				rich = true;
 				tntPOS.setLocation(-1, -1);
