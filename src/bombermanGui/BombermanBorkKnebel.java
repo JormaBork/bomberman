@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,9 +57,9 @@ public class BombermanBorkKnebel {
 			addKeyListener(player2);
 			
 			try {
-				wallImage = ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("wall.png"));
-				woodImage = ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("wood.png"));
-				tntImage = ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("tnt.png"));
+				wallImage = ImageIO.read(new File("img/wall.png"));
+				woodImage = ImageIO.read(new File("img/wood.png"));
+				tntImage = ImageIO.read(new File("img/tnt.png"));
 
 //				creeperImage = ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("creeper.png"));
 			} catch (IOException e) {
