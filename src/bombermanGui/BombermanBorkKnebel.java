@@ -4,23 +4,28 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.imageio.ImageIO;
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject; 
 
 
 
@@ -56,15 +61,19 @@ public class BombermanBorkKnebel {
 		
 		
 		bombermanGui() {
-//			setPreferredSize(new Dimension(WIDTH, HEIGHT));
-			erstelleSpielfeld(WIDTH, HEIGHT, true);
+			setPreferredSize(new Dimension(WIDTH, HEIGHT));
+//			erstelleSpielfeld(WIDTH, HEIGHT, true);
 			setFocusable(true);
+			
+			
 			
 			player1 = new Player("player1", 25, 25, "img/creeper.png", 1);
 			player1.start();
 			player2 = new Player("player2", 75, 75, "img/creeper.png", 2);
 			player2.start();
 
+			writeJson(25,25);
+			
 			addKeyListener(player1);
 			addKeyListener(player2);
 			
@@ -127,79 +136,76 @@ public class BombermanBorkKnebel {
 			}
 		}
 
-		
+		public void writeJson(int x, int y){
+	        
+	        JSONObject obj = new JSONObject();
+
+	    	JSONArray player1 = new JSONArray();
+	    	player1.add(x);
+	    	player1.add(y);
+
+	    	obj.put("player1", player1);
+
+	    	try {
+
+	    		FileWriter file = new FileWriter("/test.json");
+	    		file.write(obj.toJSONString());
+	    		file.flush();
+	    		file.close();
+
+	    	} catch (IOException e) {
+	    		e.printStackTrace();
+	    	}
+	    	System.out.print(obj);
+		}
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			
 			g.drawImage(player1.getImg(), player1.getX(), player1.getY(), 20, 20, null);
 			g.drawImage(player2.getImg(), player2.getX(), player2.getY(), 20, 20, null);
-			
-			Graphics2D g2d = (Graphics2D) g;
-			if (tiles.size() != 0) {
-				for (int i = 0; i < tiles.size(); i++)
-					g2d.drawImage(tiles.get(i).getImage(), tiles.get(i)
-							.getLocation().x, tiles.get(i).getLocation().y, this);
-			}
-			if (tiles.size() != 0) {
-				for (int i = 0; i < tiles.size(); i++)
-					g2d.drawImage(tiles.get(i).getImageStein(), tiles.get(i)
-							.getLocation().x, tiles.get(i).getLocation().y, this);
-			}
-			if (tileList.size() != 0) {
-				for (int i = 0; i < tileList.size(); i++)
-					g2d.drawImage(tileList.get(i).getImageKachel(), tileList
-							.get(i).getLocation().x, tileList.get(i)
-							.getLocation().y, this);
-			}
-//			if (kistenListe.size() != 0) {
-//				for (int i = 0; i < kistenListe.size(); i++)
-//					g2d.drawImage(kistenListe.get(i).getImage(), kistenListe.get(i)
-//							.getLocation().x, kistenListe.get(i).getLocation().y,
-//							this);
-//			}
 
 			// Figuren zeichnen
-//			g.drawImage(woodImage, 50, 25, 25, 25, null);
-//			g.drawImage(tntImage, 50, 75, 25, 25, null);
+			g.drawImage(woodImage, 50, 25, 25, 25, null);
+			g.drawImage(tntImage, 50, 75, 25, 25, null);
 
 			// Die Wände drumherum
-//			for (int y = 0; y < HEIGHT; y += 25) {
-//				g.drawImage(wallImage, 0, y, null);
-//				g.drawImage(wallImage, WIDTH - 25, y, null);
+			for (int y = 0; y < HEIGHT; y += 25) {
+				g.drawImage(wallImage, 0, y, null);
+				g.drawImage(wallImage, WIDTH - 25, y, null);
 //				wallPositionList.add(new Point(0, y));
 //				wallPositionList.add(new Point(WIDTH - 25, y));
-//			}
-//			for (int x = 0; x < WIDTH; x += 25) {
-//				g.drawImage(wallImage, x, 0, null);
-//				g.drawImage(wallImage, x, HEIGHT - 25, null);
+			}
+			for (int x = 0; x < WIDTH; x += 25) {
+				g.drawImage(wallImage, x, 0, null);
+				g.drawImage(wallImage, x, HEIGHT - 25, null);
 //				wallPositionList.add(new Point(x, 0));
 //				wallPositionList.add(new Point(x, HEIGHT - 25));
-//			}
-//			// Die Wände innerhalb des Spielfeldes
-//			for (int y = 0; y < HEIGHT; y += 50) {
-//				for (int x = 0; x < WIDTH; x += 50) {
-//					g.drawImage(wallImage, x, y, null);
+			}
+			// Die Wände innerhalb des Spielfeldes
+			for (int y = 0; y < HEIGHT; y += 50) {
+				for (int x = 0; x < WIDTH; x += 50) {
+					g.drawImage(wallImage, x, y, null);
 //					wallPositionList.add(new Point(x, y));
-//				}
-//			}
-//			for (int y = 0; y < HEIGHT; y++) {
-//				for (int x = 0; x < WIDTH; x++) {
-//					char c = ' ';
-//					Point p = new Point(x, y);
-//
+				}
+			}
+			for (int y = 0; y < HEIGHT; y++) {
+				for (int x = 0; x < WIDTH; x++) {
+					char c = ' ';
+					Point p = new Point(x, y);
+
 //					if (tntPOS.equals(p))
-////						c = '$';
-//
-//					// g.hitclip für collisionsabfrage möglich?
+//						c = '$';
+
+					// g.hitclip für collisionsabfrage möglich?
 //					if (g.hitClip(50, 125, 25, 25))
-//
+
 //						if (Arrays.asList(snakePositions).contains(p))
 ////							c = 'S';
 //					if (!Character.isWhitespace(c))
 //						g.drawString(Character.toString(c), x * 10, y * 10);
-//				}
-//			}
+				}
+			}
 			// Status aktualisieren
 //			if (rich && playerPosition.equals(doorPosition)) {
 //				System.out.println("Gewonnen!");
