@@ -1,6 +1,7 @@
 package bombermanGui;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -9,8 +10,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import bombermanGui.BombermanBorkKnebel.bombermanGui;
 
 public class Player extends Thread implements KeyListener {
 	
@@ -25,6 +28,9 @@ public class Player extends Thread implements KeyListener {
 	boolean end = false;
 	int stepSize = 5;
 	int whichPlayer;
+	public Rectangle rectPlayer;
+	public JPanel pP;
+	public int directory = 0;
 //	private String playerImage="";
 	
 	
@@ -125,18 +131,18 @@ public class Player extends Thread implements KeyListener {
 				break;
 			case KeyEvent.VK_A:
 				this.setX ( Math.max(0, this.getX() - stepSize) );
-				break;
+				break;	
 			case KeyEvent.VK_D:
 				this.setX ( Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getX() + stepSize) );
 				break;
 			}			
 		}
+//		checkCollision();
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -145,4 +151,54 @@ public class Player extends Thread implements KeyListener {
 		
 	}
 	
+	
+	
+	
+	public void createRectangle(){
+		
+		rectPlayer = pP.getBounds();
+		rectPlayer.y += 15;
+	}
+	
+	private void collision(Rectangle rectPlayer, Rectangle rectangleTmp){
+		if(rectPlayer.intersects(rectangleTmp)){
+			if(directory == 1 
+					&& (rectangleTmp.x + rectangleTmp.width >= rectPlayer.x)
+					&& rectangleTmp.x + rectangleTmp.width <= rectPlayer.x + rectPlayer.width){
+			pP.setLocation(pP.getLocation().x + 1, pP.getLocation().y);}
+			if(pP.getLocation().x % 25 == 0){
+				directory = 0;
+			} else if (directory == 3
+					&& (rectangleTmp.x <= rectPlayer.x + rectPlayer.width)
+					&& rectangleTmp.x >= rectPlayer.x) {
+				pP.setLocation(pP.getLocation().x - 1, pP.getLocation().y);
+				if (pP.getLocation().x % 25 == 0) {
+					directory = 0;
+				}
+			}
+			if (directory == 4
+					&& (rectangleTmp.y <= rectPlayer.y + rectPlayer.height)
+					&& rectangleTmp.y >= rectPlayer.y) {
+				pP.setLocation(pP.getLocation().x, pP.getLocation().y - 1);
+				if ((pP.getLocation().y + 15) % 25 == 0) {
+					directory = 0;
+				}
+			} else if (directory == 2
+					&& (rectangleTmp.y + rectangleTmp.height >= rectPlayer.y)
+					&& rectangleTmp.y + rectangleTmp.height <= rectPlayer.y
+							+ rectPlayer.height) {
+				pP.setLocation(pP.getLocation().x, pP.getLocation().y + 1);
+				if ((pP.getLocation().y + 15) % 25 == 0) {
+					directory = 0;
+				}
+			}
+		}
+	}
+	private void checkCollision(){
+		bombermanGui.player1.createRectangle();
+		bombermanGui.player2.createRectangle();
+		createRectangle();
+	
+//		for(int i = 0; i < bom)
+	}
 }
