@@ -11,13 +11,13 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
@@ -26,6 +26,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 public class BombermanBorkKnebel {
 
@@ -57,11 +61,13 @@ public class BombermanBorkKnebel {
 			setFocusable(true);
 			fillWallPositionList();
 
-			player1 = new Player("player1", 25, 25, "img/creeper.png", 1, keysPressed);
+			player1 = new Player("player1", readJson("player1").get(0), readJson("player1").get(1), "img/creeper.png", 1, keysPressed);
 			player1.start();
-			player2 = new Player("player2", 75, 75, "img/creeper.png", 2, keysPressed);
+			player2 = new Player("player2", readJson("player2").get(0), readJson("player2").get(1), "img/creeper.png", 2, keysPressed);
 			player2.start();
 
+//			writeJson(25,25,75,75);
+			
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 
 			try {
@@ -82,6 +88,63 @@ public class BombermanBorkKnebel {
 			}
 		}
 
+		@SuppressWarnings("unchecked")
+		public void writeJson(int x, int y, int a, int b){
+	        
+			// JSONObject wird erstellt und JSONArrays mit den übergebenen Werten werden erstellt
+	        JSONObject obj = new JSONObject();
+	    	JSONArray player1 = new JSONArray();
+	    	player1.add(x);
+	    	player1.add(y);
+	    	obj.put("player1", player1);
+	    	JSONArray player2 =  new JSONArray();
+	    	player2.add(a);
+	    	player2.add(b);
+	    	obj.put("player2", player2);
+	    	
+	    	// das JSONObject wird in die .json datei geschrieben
+	    	try {
+	    		FileWriter file = new FileWriter("test.json");
+	    		file.write(obj.toJSONString());
+	    		file.flush();
+	    		file.close();
+
+	    	} catch (IOException e) {
+	    		e.printStackTrace();
+	    	}
+		}
+		
+		public ArrayList<Integer> readJson(String playerName){
+			JSONParser parser = new JSONParser();
+			JSONArray player = null;
+			ArrayList<Integer> daten = new ArrayList<Integer>();
+			try {
+				
+				//Pfad der .json datei
+				Object obj = parser.parse(new FileReader("test.json"));
+
+				JSONObject jsonObject = (JSONObject) obj;
+
+
+				// dem JSONArray wird das Array mit entsprechenden player namen zugewiesen
+				player = (JSONArray) jsonObject.get(playerName);
+
+				// die einzelnen werte werden in das zurückzugebende array geschrieben
+				daten.add((Integer.parseInt(player.get(0).toString())));
+				daten.add((Integer.parseInt(player.get(1).toString())));
+
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (org.json.simple.parser.ParseException e) {
+				e.printStackTrace();
+			}
+
+
+			return daten;
+		}
+		
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
