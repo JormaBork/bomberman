@@ -1,6 +1,7 @@
 package bombermanGui;
 
 import java.awt.Graphics;
+import java.awt.KeyEventDispatcher;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -12,7 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-public class Player extends Thread implements KeyListener {
+public class Player extends Thread implements KeyListener,KeyEventDispatcher {
 	
 	private String name;
 	private int x,y;
@@ -143,6 +144,12 @@ public class Player extends Thread implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent e) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }
