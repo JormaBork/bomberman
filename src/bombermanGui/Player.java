@@ -114,8 +114,10 @@ public class Player extends Thread {
 	 */
 	public void update() {
 
-		for (Point point : bombermanGui.wallPositionList)
-			if ((this.x >= (25)) && (this.x <= bombermanGui.WIDTH) && (this.y >= (25)) && (this.y <= bombermanGui.HEIGHT)) {
+	//	for (Point point : bombermanGui.wallPositionList) {
+			if ((this.x >= (25)) && (this.x <= bombermanGui.WIDTH) && (this.y >= (25))
+					&& (this.y <= bombermanGui.HEIGHT)) {
+
 				// über alle gedrückten Tasten iterieren
 				if (this.whichPlayer == 1) {
 					for (int key : keysPressed) {
@@ -153,5 +155,6 @@ public class Player extends Thread {
 					}
 				}
 			}
+		//}
 	}
 }
