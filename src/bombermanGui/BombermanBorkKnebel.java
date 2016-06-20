@@ -10,14 +10,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -25,7 +24,8 @@ import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject; 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser; 
 
 
 
@@ -51,28 +51,23 @@ public class BombermanBorkKnebel {
 		boolean end = false;
 		public final int WIDTH = 775, HEIGHT = 375;
 		public Rectangle rect;
-		private static int startY, startX = 0;
 		public static int anzahlReihe, anzahlSpalte;
-		private int spalte = 0;
 		public static int  dimension = 25;
-		public static ArrayList<Tile> tiles = new ArrayList<Tile>();
-		public static ArrayList<Tile> tileList = new ArrayList<Tile>();
-		
 		
 		
 		bombermanGui() {
 			setPreferredSize(new Dimension(WIDTH, HEIGHT));
-//			erstelleSpielfeld(WIDTH, HEIGHT, true);
 			setFocusable(true);
 			
 			
-			
-			player1 = new Player("player1", 25, 25, "img/creeper.png", 1);
+
+			player1 = new Player("player1", readJson("player1").get(0), readJson("player1").get(1), "img/creeper.png", 1);
 			player1.start();
-			player2 = new Player("player2", 75, 75, "img/creeper.png", 2);
+			player2 = new Player("player2", readJson("player2").get(0), readJson("player2").get(1), "img/creeper.png", 2);
 			player2.start();
 
-			writeJson(25,25);
+//			writeJson(player1.getX(), player1.getY(),player2.getX(), player2.getY());
+			
 			
 			addKeyListener(player1);
 			addKeyListener(player2);
@@ -90,65 +85,24 @@ public class BombermanBorkKnebel {
 		}
 
 		
-		private void erstelleSpielfeld(int waagerecht, int senkrecht, boolean load){
-			startY = 0;
-			Tile tile;
-			anzahlReihe = waagerecht;
-			anzahlSpalte = senkrecht;
-			
-			for (int i = 1; i <= anzahlReihe; i++) {
-				if (spalte == 0 || spalte == anzahlSpalte - 1 || i == 1
-						|| i == anzahlReihe || spalte % 2 == 0 && i % 2 != 0) {
-					tile = new Tile(dimension, false);
-					tile.setBounds(startX, startY, dimension, dimension);
-					tiles.add(tile);
-					add(tile);
-				} else {
-//					tile = new Tile(dimension);
-//					tile.setBounds(startX, startY, dimension, dimension);
-//					if (!load) {
-//						double random = Math.random();
-//						if (!(spalte <= 2 && i <= 3)) {
-//							if (!(spalte >= anzahlSpalte - 3 && i >= anzahlReihe - 2)) {
-//								if (random >= 0.5) {
-//									kiste = new Kiste();
-//									kiste.setBounds(startX, startY, dimension,
-//											dimension);
-//									kistenListe.add(kiste);
-//									tile.add(kiste);
-//								}
-//							}
-//						}
-//					}
-//					tileList.add(tile);
-//					add(tile);
-				}
-				if (i != 0)
-					startX += dimension;
-				if (i == anzahlReihe) {
-					spalte++;
-					startY += dimension;
-					startX = 0;
-					i = 0;
-					if (spalte == anzahlSpalte)
-						return;
-				}
-			}
-		}
 
-		public void writeJson(int x, int y){
+		@SuppressWarnings("unchecked")
+		public void writeJson(int x, int y, int a, int b){
 	        
+			// JSONObject wird erstellt und JSONArrays mit den übergebenen Werten werden erstellt
 	        JSONObject obj = new JSONObject();
-
 	    	JSONArray player1 = new JSONArray();
 	    	player1.add(x);
 	    	player1.add(y);
-
 	    	obj.put("player1", player1);
-
+	    	JSONArray player2 =  new JSONArray();
+	    	player2.add(a);
+	    	player2.add(b);
+	    	obj.put("player2", player2);
+	    	
+	    	// das JSONObject wird in die .json datei geschrieben
 	    	try {
-
-	    		FileWriter file = new FileWriter("/test.json");
+	    		FileWriter file = new FileWriter("test.json");
 	    		file.write(obj.toJSONString());
 	    		file.flush();
 	    		file.close();
@@ -156,8 +110,39 @@ public class BombermanBorkKnebel {
 	    	} catch (IOException e) {
 	    		e.printStackTrace();
 	    	}
-	    	System.out.print(obj);
 		}
+		
+		public ArrayList<Integer> readJson(String playerName){
+			JSONParser parser = new JSONParser();
+			JSONArray player = null;
+			ArrayList<Integer> daten = new ArrayList<Integer>();
+			try {
+				
+				//Pfad der .json datei
+				Object obj = parser.parse(new FileReader("test.json"));
+
+				JSONObject jsonObject = (JSONObject) obj;
+
+
+				// dem JSONArray wird das Array mit entsprechenden player namen zugewiesen
+				player = (JSONArray) jsonObject.get(playerName);
+
+				// die einzelnen werte werden in das zurückzugebende array geschrieben
+				daten.add((Integer.parseInt(player.get(0).toString())));
+				daten.add((Integer.parseInt(player.get(1).toString())));
+
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (org.json.simple.parser.ParseException e) {
+				e.printStackTrace();
+			}
+
+
+			return daten;
+		}
+		
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
@@ -189,39 +174,6 @@ public class BombermanBorkKnebel {
 //					wallPositionList.add(new Point(x, y));
 				}
 			}
-			for (int y = 0; y < HEIGHT; y++) {
-				for (int x = 0; x < WIDTH; x++) {
-					char c = ' ';
-					Point p = new Point(x, y);
-
-//					if (tntPOS.equals(p))
-//						c = '$';
-
-					// g.hitclip für collisionsabfrage möglich?
-//					if (g.hitClip(50, 125, 25, 25))
-
-//						if (Arrays.asList(snakePositions).contains(p))
-////							c = 'S';
-//					if (!Character.isWhitespace(c))
-//						g.drawString(Character.toString(c), x * 10, y * 10);
-				}
-			}
-			// Status aktualisieren
-//			if (rich && playerPosition.equals(doorPosition)) {
-//				System.out.println("Gewonnen!");
-//				end = true;
-//				return;
-//			}
-//			if (Arrays.asList(snakePositions).contains(playerPosition)) {
-//				System.out.println("ZZZZZZZ. Die Schlage hat dich!");
-//				end = true;
-//				return;
-//			}
-			if (playerPosition.equals(tntPOS)) {
-				rich = true;
-				tntPOS.setLocation(-1, -1);
-			}
-		}
 
 //		@Override
 //		public void keyPressed(KeyEvent e) {
@@ -267,6 +219,7 @@ public class BombermanBorkKnebel {
 //			// TODO Auto-generated method stub
 //			
 //		}
+		}
 
 	}
 
@@ -285,6 +238,8 @@ public class BombermanBorkKnebel {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
+		
+		
 		btnStartGame.setHorizontalAlignment(SwingConstants.LEFT);
 		controlPanel.add(btnStartGame);
 		f.pack();
