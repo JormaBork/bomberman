@@ -114,47 +114,47 @@ public class Player extends Thread {
 	 */
 	public void update() {
 
-	//	for (Point point : bombermanGui.wallPositionList) {
-			if ((this.x >= (25)) && (this.x <= bombermanGui.WIDTH) && (this.y >= (25))
-					&& (this.y <= bombermanGui.HEIGHT)) {
+		// über alle gedrückten Tasten iterieren
+		if (this.whichPlayer == 1) {
+			for (int key : keysPressed) {
 
-				// über alle gedrückten Tasten iterieren
-				if (this.whichPlayer == 1) {
-					for (int key : keysPressed) {
-						if (key == KeyEvent.VK_UP) {
+				if (key == KeyEvent.VK_UP) {
+					for (Point point : bombermanGui.wallPositionList) {
+						if (this.y >= (point.y + 25)) {
 							this.setY(Math.max(0, this.getY() - stepSize));
-						}
-						if (key == KeyEvent.VK_DOWN) {
-							this.setY(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize,
-									this.getY() + stepSize));
-						}
-						if (key == KeyEvent.VK_LEFT) {
-							this.setX(Math.max(0, this.getX() - stepSize));
-						}
-						if (key == KeyEvent.VK_RIGHT) {
-							this.setX(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize,
-									this.getX() + stepSize));
-						}
-					}
-				} else if (this.whichPlayer == 2) {
-					for (int key : keysPressed) {
-						if (key == KeyEvent.VK_W) {
-							this.setY(Math.max(0, this.getY() - stepSize));
-						}
-						if (key == KeyEvent.VK_S) {
-							this.setY(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize,
-									this.getY() + stepSize));
-						}
-						if (key == KeyEvent.VK_A) {
-							this.setX(Math.max(0, this.getX() - stepSize));
-						}
-						if (key == KeyEvent.VK_D) {
-							this.setX(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize,
-									this.getX() + stepSize));
 						}
 					}
 				}
+				if (key == KeyEvent.VK_DOWN) {
+					for (Point point : bombermanGui.wallPositionList) {
+						if ((this.y+20) <= (point.y - 25)) {
+							this.setY(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize,
+									this.getY() + stepSize));
+						}
+					}
+					if (key == KeyEvent.VK_LEFT) {
+						this.setX(Math.max(0, this.getX() - stepSize));
+					}
+					if (key == KeyEvent.VK_RIGHT) {
+						this.setX(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getX() + stepSize));
+					}
+				}
 			}
-		//}
+		} else if (this.whichPlayer == 2) {
+			for (int key : keysPressed) {
+				if (key == KeyEvent.VK_W) {
+					this.setY(Math.max(0, this.getY() - stepSize));
+				}
+				if (key == KeyEvent.VK_S) {
+					this.setY(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getY() + stepSize));
+				}
+				if (key == KeyEvent.VK_A) {
+					this.setX(Math.max(0, this.getX() - stepSize));
+				}
+				if (key == KeyEvent.VK_D) {
+					this.setX(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getX() + stepSize));
+				}
+			}
+		}
 	}
 }
