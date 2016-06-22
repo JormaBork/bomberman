@@ -13,7 +13,7 @@ public class Box implements Runnable {
 	public Box(int b, int x, int y) {
 		
 		try {
-			boxImage = ImageIO.read(new File("img/wood.png"));
+			boxImage = ImageIO.read(new File("src/images/wood.png"));
 		} 
 		catch (IOException e) {
 			e.printStackTrace();

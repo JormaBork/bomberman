@@ -16,7 +16,7 @@ public class Bomb implements Runnable {
 	public Bomb(int b, int x, int y) {
 		
 		try {
-			bombImage = ImageIO.read(new File("img/tnt.png"));
+			bombImage = ImageIO.read(new File("src/images/tnt.png"));
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
