@@ -41,8 +41,9 @@ public class BombermanBorkKnebel {
 
 		private static final long serialVersionUID = 1L;
 		Point playerPosition = new Point(25, 25);
-		static ArrayList<Point> wallPositionList = new ArrayList<>();
+		public static ArrayList<Point> wallPositionList = new ArrayList<>();
 		public static ArrayList<Bomb> bombList = new ArrayList<>();
+		public static ArrayList<Box> boxList = new ArrayList<>();
 		Point tntPOS = new Point(6, 6);
 		// Point doorPosition = new Point(0, 5);
 		Point[] snakePositions = { new Point(30, 2), null, null, null, null };
@@ -51,6 +52,7 @@ public class BombermanBorkKnebel {
 		BufferedImage imageDestroyable;
 		Player player1, player2;
 		Bomb bomb1;
+		Box box1;
 		boolean rich = false;
 		boolean end = false;
 		final public static int WIDTH = 775;
@@ -69,7 +71,10 @@ public class BombermanBorkKnebel {
 			player2.start();
 			
 			bomb1 = new Bomb(1,100,100);
-			bomb1.run();
+			new Thread(bomb1).start();
+			
+			box1 = new Box (1,50,25);
+			new Thread(box1).start();
 
 //			writeJson(25,25,75,75);
 			
@@ -158,11 +163,15 @@ public class BombermanBorkKnebel {
 			g.drawImage(player1.getImg(), player1.getX(), player1.getY(), 20, 20, null);
 			g.drawImage(player2.getImg(), player2.getX(), player2.getY(), 20, 20, null);
 
-			g.drawImage(woodImage, 50, 25, 25, 25, null);
+			//g.drawImage(woodImage, 50, 25, 25, 25, null);
 			
-//			for(Bomb bomb : bombList){
-			g.drawImage(bomb1.getBombImage(), 130, 130, 20, 20, null);
-//			}
+			for(Bomb bomb : bombList){
+			g.drawImage(bomb.getBombImage(), 130, 130, 20, 20, null);
+			}
+			
+			for(Box box : boxList){
+				g.drawImage(box.getBoxImage(), 50, 25, 25, 25, null);
+				}
 			
 			if (counter == 0) {
 				for (Point position : wallPositionList) {
