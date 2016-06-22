@@ -127,7 +127,7 @@ public class Player extends Thread {
 				}
 				if (key == KeyEvent.VK_DOWN) {
 					for (Point point : bombermanGui.wallPositionList) {
-						if ((this.y+20) <= (point.y - 25)) {
+						if ((this.y+20) <= (point.y)) {
 							this.setY(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize,
 									this.getY() + stepSize));
 						}
@@ -142,8 +142,13 @@ public class Player extends Thread {
 			}
 		} else if (this.whichPlayer == 2) {
 			for (int key : keysPressed) {
+
 				if (key == KeyEvent.VK_W) {
-					this.setY(Math.max(0, this.getY() - stepSize));
+					for (Point point : bombermanGui.wallPositionList) {
+						if (this.y >= (point.y + 25)) {
+							this.setY(Math.max(0, this.getY() - stepSize));
+						}
+					}
 				}
 				if (key == KeyEvent.VK_S) {
 					this.setY(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getY() + stepSize));

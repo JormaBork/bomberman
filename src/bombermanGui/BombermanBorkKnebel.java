@@ -42,6 +42,7 @@ public class BombermanBorkKnebel {
 		private static final long serialVersionUID = 1L;
 		Point playerPosition = new Point(25, 25);
 		static ArrayList<Point> wallPositionList = new ArrayList<>();
+		public static ArrayList<Bomb> bombList = new ArrayList<>();
 		Point tntPOS = new Point(6, 6);
 		// Point doorPosition = new Point(0, 5);
 		Point[] snakePositions = { new Point(30, 2), null, null, null, null };
@@ -49,6 +50,7 @@ public class BombermanBorkKnebel {
 		BufferedImage wallImage, woodImage, tntImage, background;
 		BufferedImage imageDestroyable;
 		Player player1, player2;
+		Bomb bomb1;
 		boolean rich = false;
 		boolean end = false;
 		final public static int WIDTH = 775;
@@ -65,6 +67,9 @@ public class BombermanBorkKnebel {
 			player1.start();
 			player2 = new Player("player2", readJson("player2").get(0), readJson("player2").get(1), "img/creeper.png", 2, keysPressed);
 			player2.start();
+			
+			bomb1 = new Bomb(1,100,100);
+			bomb1.run();
 
 //			writeJson(25,25,75,75);
 			
@@ -154,23 +159,11 @@ public class BombermanBorkKnebel {
 			g.drawImage(player2.getImg(), player2.getX(), player2.getY(), 20, 20, null);
 
 			g.drawImage(woodImage, 50, 25, 25, 25, null);
-			g.drawImage(tntImage, 50, 75, 25, 25, null);
-
-			// Die Wände drumherum
-			// for (int y = 0; y < HEIGHT; y += 25) {
-			// g.drawImage(wallImage, 0, y, null);
-			// g.drawImage(wallImage, WIDTH - 25, y, null);
-			// }
-			// for (int x = 0; x < WIDTH; x += 25) {
-			// g.drawImage(wallImage, x, 0, null);
-			// g.drawImage(wallImage, x, HEIGHT - 25, null);
-			// }
-			// // Die Wände innerhalb des Spielfeldes
-			// for (int y = 0; y < HEIGHT; y += 50) {
-			// for (int x = 0; x < WIDTH; x += 50) {
-			// g.drawImage(wallImage, x, y, null);
-			// }
-			// }
+			
+//			for(Bomb bomb : bombList){
+			g.drawImage(bomb1.getBombImage(), 130, 130, 20, 20, null);
+//			}
+			
 			if (counter == 0) {
 				for (Point position : wallPositionList) {
 					g.drawImage(wallImage, position.x, position.y, null);
@@ -217,19 +210,6 @@ public class BombermanBorkKnebel {
 
 			return true; // nichts weiter mit dem KeyEvent machen
 		}
-
-		// @Override
-		// public void keyTyped(KeyEvent e) {
-		// // TODO Auto-generated method stub
-		//
-		// }
-		//
-		// @Override
-		// public void keyReleased(KeyEvent e) {
-		// // TODO Auto-generated method stub
-		//
-		// }
-
 	}
 
 	public static void main(String[] args) {
