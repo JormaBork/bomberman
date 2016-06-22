@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Jorma/Studium/Semester 2/Programmierung 2/Tutorial-Swing/Tutorial-Swing/TutorialSwing_OceanApp_v1/lib/jgoodies-common-1.8.0.jar"/>
-	<classpathentry kind="lib" path="C:/Jorma/Studium/Semester 2/Programmierung 2/Tutorial-Swing/Tutorial-Swing/TutorialSwing_OceanApp_v1/lib/jgoodies-forms-1.8.0.jar"/>
-	<classpathentry kind="lib" path="C:/Jorma/workspace/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="//lib/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="//lib/jgoodies-forms-1.8.0-sources.jar"/>
+	<classpathentry kind="lib" path="//lib/jgoodies-forms-1.8.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
