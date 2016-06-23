@@ -67,7 +67,7 @@ public class BombermanBorkKnebel {
 
 			player1 = new Player("player1", readJson("player1").get(0), readJson("player1").get(1), "src/images/creeper.png", 1, keysPressed);
 			player1.start();
-			player2 = new Player("player2", readJson("player2").get(0), readJson("player2").get(1), "src/images/creeper.png", 2, keysPressed);
+			player2 = new Player("player2", readJson("player2").get(0), readJson("player2").get(1), "src/images/creeperBlue.png", 2, keysPressed);
 			player2.start();
 			
 			bomb1 = new Bomb(100,100);
