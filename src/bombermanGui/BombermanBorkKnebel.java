@@ -65,10 +65,14 @@ public class BombermanBorkKnebel {
 			setFocusable(true);
 			fillWallPositionList();
 
+//			writeJson(100,25,75,75);
+			
 			player1 = new Player("player1", readJson("player1").get(0), readJson("player1").get(1), "src/images/creeper.png", 1, keysPressed);
 			player1.start();
 			player2 = new Player("player2", readJson("player2").get(0), readJson("player2").get(1), "src/images/creeperBlue.png", 2, keysPressed);
 			player2.start();
+			
+
 			
 			bomb1 = new Bomb(100,100);
 			new Thread(bomb1).start();
@@ -244,12 +248,34 @@ public class BombermanBorkKnebel {
 		f.getContentPane().add(controlPanel, BorderLayout.SOUTH);
 
 		JButton btnStartGame = new JButton("Start Game");
+		btnStartGame.setHorizontalAlignment(SwingConstants.LEFT);
+		controlPanel.add(btnStartGame);
 		btnStartGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnStartGame.setHorizontalAlignment(SwingConstants.LEFT);
-		controlPanel.add(btnStartGame);
+		
+		JButton btnLoadGame = new JButton("Load Game");
+		controlPanel.add(btnLoadGame);
+		btnLoadGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pBombermanGui.player1 = new Player("player1", pBombermanGui.readJson("player1").get(0), pBombermanGui.readJson("player1").get(1), "src/images/creeper.png", 1, pBombermanGui.keysPressed);
+				pBombermanGui.player1.start();
+				pBombermanGui.player2 = new Player("player2", pBombermanGui.readJson("player2").get(0), pBombermanGui.readJson("player2").get(1), "src/images/creeperBlue.png", 2, pBombermanGui.keysPressed);
+				pBombermanGui.player2.start();
+			}
+		});
+		
+		JButton btnSaveGame = new JButton("Save Game");
+		controlPanel.add(btnSaveGame);
+		btnSaveGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pBombermanGui.writeJson(pBombermanGui.player1.getX(), pBombermanGui.player1.getY(), 
+										pBombermanGui.player2.getX(), pBombermanGui.player2.getY());
+			}
+		});
+		
+
 		f.pack();
 		f.setVisible(true);
 
