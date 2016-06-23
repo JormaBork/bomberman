@@ -65,12 +65,12 @@ public class BombermanBorkKnebel {
 			setFocusable(true);
 			fillWallPositionList();
 
-			player1 = new Player("player1", readJson("player1").get(0), readJson("player1").get(1), "img/creeper.png", 1, keysPressed);
+			player1 = new Player("player1", readJson("player1").get(0), readJson("player1").get(1), "src/images/creeper.png", 1, keysPressed);
 			player1.start();
-			player2 = new Player("player2", readJson("player2").get(0), readJson("player2").get(1), "img/creeper.png", 2, keysPressed);
+			player2 = new Player("player2", readJson("player2").get(0), readJson("player2").get(1), "src/images/creeper.png", 2, keysPressed);
 			player2.start();
 			
-			bomb1 = new Bomb(100,100);
+			bomb1 = new Bomb(1,100,100);
 			new Thread(bomb1).start();
 			
 			box1 = new Box (1,50,25);
@@ -81,9 +81,9 @@ public class BombermanBorkKnebel {
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 
 			try {
-				wallImage = ImageIO.read(new File("img/wall.png"));
-				woodImage = ImageIO.read(new File("img/wood.png"));
-				tntImage = ImageIO.read(new File("img/tnt.png"));
+				wallImage = ImageIO.read(new File("src/images/wall.png"));
+				woodImage = ImageIO.read(new File("src/images/wood.png"));
+				tntImage = ImageIO.read(new File("src/images/tnt.png"));
 
 				// creeperImage =
 				// ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("creeper.png"));
@@ -170,7 +170,7 @@ public class BombermanBorkKnebel {
 			}
 			
 			for(Box box : boxList){
-				g.drawImage(box.getBoxImage(), 50, 25, 25, 20, null);
+				g.drawImage(box.getBoxImage(), 50, 25, 25, 25, null);
 				}
 			
 			if (counter == 0) {
