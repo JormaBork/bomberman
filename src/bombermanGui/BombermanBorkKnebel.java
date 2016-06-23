@@ -70,7 +70,7 @@ public class BombermanBorkKnebel {
 			player2 = new Player("player2", readJson("player2").get(0), readJson("player2").get(1), "src/images/creeper.png", 2, keysPressed);
 			player2.start();
 			
-			bomb1 = new Bomb(1,100,100);
+			bomb1 = new Bomb(100,100);
 			new Thread(bomb1).start();
 			
 			box1 = new Box (1,50,25);
