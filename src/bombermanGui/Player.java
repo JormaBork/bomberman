@@ -129,7 +129,7 @@ public class Player extends Thread {
 
 				if (key == KeyEvent.VK_UP) {
 					for (Point point : bombermanGui.wallPositionList) {
-						if (this.y >= (point.y + 25)) {
+						if (this.y <= (point.y) || this.y >= (point.y + 25)) {
 							this.setY(Math.max(0, this.getY() - stepSize));
 						}
 					}
