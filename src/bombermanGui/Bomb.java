@@ -9,20 +9,17 @@ import javax.imageio.ImageIO;
 
 public class Bomb implements Runnable {
 
-	
 	int bombNumber, x, y;
 	BufferedImage bombImage;
 
-	public Bomb(int b, int x, int y) {
-		
+	public Bomb(int x, int y) {
+
 		try {
 			bombImage = ImageIO.read(new File("src/images/tnt.png"));
-		} 
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		this.bombNumber = b;
+
 		this.x = x;
 		this.y = y;
 		BombermanBorkKnebel.bombermanGui.bombList.add(this);
@@ -71,7 +68,7 @@ public class Bomb implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
+
 		BombermanBorkKnebel.bombermanGui.bombList.remove(this);
 	}
 }
