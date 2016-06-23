@@ -166,7 +166,7 @@ public class BombermanBorkKnebel {
 			//g.drawImage(woodImage, 50, 25, 25, 25, null);
 			
 			for(Bomb bomb : bombList){
-			g.drawImage(bomb.getBombImage(), 130, 130, 20, 20, null);
+			g.drawImage(bomb.getBombImage(), bomb.x, bomb.y, 20, 20, null);
 			}
 			
 			for(Box box : boxList){
