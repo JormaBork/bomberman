@@ -70,5 +70,6 @@ public class Bomb implements Runnable {
 		}
 
 		BombermanBorkKnebel.bombermanGui.bombList.remove(this);
+		System.out.println("test");
 	}
 }

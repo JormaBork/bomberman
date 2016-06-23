@@ -121,6 +121,8 @@ public class Player extends Thread {
 	public void update() {
 
 		// über alle gedrückten Tasten iterieren
+		int pressKey = 0;
+		
 		if (this.whichPlayer == 1) {
 			for (int key : keysPressed) {
 
@@ -145,7 +147,9 @@ public class Player extends Thread {
 				if (key == KeyEvent.VK_RIGHT) {
 					this.setX(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getX() + stepSize));
 				}
+				
 				if (key == KeyEvent.VK_B) {
+					pressKey = key;
 					this.drawBomb();
 					System.out.println("drawbomb Test");
 				}
@@ -170,6 +174,9 @@ public class Player extends Thread {
 					this.setX(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getX() + stepSize));
 				}
 			}
+		}
+		if(pressKey > 0){
+			keysPressed.remove((Integer)pressKey);
 		}
 	}
 }
