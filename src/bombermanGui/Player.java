@@ -108,8 +108,9 @@ public class Player extends Thread {
 	}
 
 	public void drawBomb() {
-		Bomb bombe = new Bomb(this.x-25, this.y-25);
+		Bomb bombe = new Bomb(this.x, this.y);
 		new Thread(bombe).start();
+		
 		BombermanBorkKnebel.bombermanGui.bombList.add(bombe);
 	}
 
@@ -173,7 +174,13 @@ public class Player extends Thread {
 				if (key == KeyEvent.VK_D) {
 					this.setX(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getX() + stepSize));
 				}
+				if (key == KeyEvent.VK_R) {
+					pressKey = key;
+					this.drawBomb();
+					System.out.println("drawbomb Test");
+				}
 			}
+			
 		}
 		if(pressKey > 0){
 			keysPressed.remove((Integer)pressKey);
