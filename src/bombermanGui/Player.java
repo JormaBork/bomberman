@@ -107,6 +107,13 @@ public class Player extends Thread {
 		return destroyable;
 	}
 
+	public void drawBomb() {
+		Bomb bombe = new Bomb(50, 75);
+		new Thread(bombe).start();
+		BombermanBorkKnebel.bombermanGui.bombList.add(bombe);
+		System.out.println("ddddd");
+	}
+
 	/*
 	 * Die Update-Funktion lässt den Spielstand um eine bestimmte Zeitspanne
 	 * (period) voranschreiten, wobei Spielregeln/-logik implementiert und
@@ -127,17 +134,21 @@ public class Player extends Thread {
 				}
 				if (key == KeyEvent.VK_DOWN) {
 					for (Point point : bombermanGui.wallPositionList) {
-						if ((this.y+20) <= (point.y)) {
+						if ((this.y + 20) <= (point.y)) {
 							this.setY(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize,
 									this.getY() + stepSize));
 						}
 					}
-					if (key == KeyEvent.VK_LEFT) {
-						this.setX(Math.max(0, this.getX() - stepSize));
-					}
-					if (key == KeyEvent.VK_RIGHT) {
-						this.setX(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getX() + stepSize));
-					}
+				}
+				if (key == KeyEvent.VK_LEFT) {
+					this.setX(Math.max(0, this.getX() - stepSize));
+				}
+				if (key == KeyEvent.VK_RIGHT) {
+					this.setX(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getX() + stepSize));
+				}
+				if (key == KeyEvent.VK_B) {
+					this.drawBomb();
+					keysPressed.remove((Integer)key);
 				}
 			}
 		} else if (this.whichPlayer == 2) {

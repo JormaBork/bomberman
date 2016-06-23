@@ -10,10 +10,10 @@ import javax.imageio.ImageIO;
 public class Bomb implements Runnable {
 
 	
-	int bombNumber, x, y;
+	int x, y;
 	BufferedImage bombImage;
 
-	public Bomb(int b, int x, int y) {
+	public Bomb(int x, int y) {
 		
 		try {
 			bombImage = ImageIO.read(new File("src/images/tnt.png"));
@@ -22,19 +22,11 @@ public class Bomb implements Runnable {
 			e.printStackTrace();
 		}
 		
-		this.bombNumber = b;
 		this.x = x;
 		this.y = y;
 		BombermanBorkKnebel.bombermanGui.bombList.add(this);
 	}
 
-	public int getBombNumber() {
-		return bombNumber;
-	}
-
-	public void setBombNumber(int bombNumber) {
-		this.bombNumber = bombNumber;
-	}
 
 	public int getX() {
 		return x;
