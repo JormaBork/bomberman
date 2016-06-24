@@ -110,8 +110,6 @@ public class Player extends Thread {
 	public void drawBomb() {
 		Bomb bombe = new Bomb(this.x, this.y);
 		new Thread(bombe).start();
-		
-		BombermanBorkKnebel.bombermanGui.bombList.add(bombe);
 	}
 
 	/*
