@@ -18,6 +18,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
@@ -65,23 +66,27 @@ public class BombermanBorkKnebel {
 			setFocusable(true);
 			fillWallPositionList();
 
-//			writeJson(100,25,75,75);
-			
-			player1 = new Player("player1", readJson("player1").get(0), readJson("player1").get(1), "src/images/creeper.png", 1, keysPressed);
+			// writeJson(100,25,75,75);
+
+			player1 = new Player("player1", readJson("player1").get(0), readJson("player1").get(1),
+					"src/images/creeper.png", 1, keysPressed);
 			player1.start();
-			player2 = new Player("player2", readJson("player2").get(0), readJson("player2").get(1), "src/images/creeperBlue.png", 2, keysPressed);
+			player2 = new Player("player2", readJson("player2").get(0), readJson("player2").get(1),
+					"src/images/creeperBlue.png", 2, keysPressed);
 			player2.start();
-			
 
+			// System.out.println(boxList);
+
+			fillBoxList();
 			
-			bomb1 = new Bomb(100,100);
+			bomb1 = new Bomb(100, 100);
 			new Thread(bomb1).start();
-			
-			box1 = new Box (1,50,25);
-			new Thread(box1).start();
 
-//			writeJson(25,25,75,75);
-			
+//			box1 = new Box(1, 50, 25);
+//			new Thread(box1).start();
+
+			// writeJson(25,25,75,75);
+
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 
 			try {
@@ -102,48 +107,111 @@ public class BombermanBorkKnebel {
 			}
 		}
 
-		@SuppressWarnings("unchecked")
-		public void writeJson(int x, int y, int a, int b){
-	        
-			// JSONObject wird erstellt und JSONArrays mit den übergebenen Werten werden erstellt
-	        JSONObject obj = new JSONObject();
-	    	JSONArray player1 = new JSONArray();
-	    	player1.add(x);
-	    	player1.add(y);
-	    	obj.put("player1", player1);
-	    	JSONArray player2 =  new JSONArray();
-	    	player2.add(a);
-	    	player2.add(b);
-	    	obj.put("player2", player2);
-	    	
-	    	// das JSONObject wird in die .json datei geschrieben
-	    	try {
-	    		FileWriter file = new FileWriter("test.json");
-	    		file.write(obj.toJSONString());
-	    		file.flush();
-	    		file.close();
+		public void fillBoxList() {
+			final Point maxBoxRange = new Point(225, 25);
+			final int boxRangeLength = 300;
+			final int boxRangeHeight = 325;
+			final int boxAnzahl = 5;
+			
+			for (int boxCount = 0; boxCount < boxAnzahl; boxCount++) {
+				int rndX = 0;
+				int rndY = 0;
+				Point boxKoordinates = new Point(rndX, rndY);
 
-	    	} catch (IOException e) {
-	    		e.printStackTrace();
-	    	}
+				
+				do {
+					int rndX1 = (int)(Math.random()*(boxRangeLength));
+					rndX = maxBoxRange.x + (rndX1 - (rndX1%25));
+					
+					int rndY1 = (int)(Math.random()*(boxRangeHeight));
+					rndY = maxBoxRange.y + (rndY1 - (rndY1%25));
+					
+//					while (rndX % 25 != 0) {
+//						rndX = maxBoxRange.x // Eine Zahl die genau auf einer
+//								+ (int) (Math.random() * ((maxBoxRange.x + boxRangeLength - maxBoxRange.x) + 1));
+//					}
+//					while (rndY % 25 != 0) {
+//						rndY = maxBoxRange.y // Eine Zahl die genau auf einer
+//								+ (int) (Math.random() * ((maxBoxRange.y + boxRangeHeight - maxBoxRange.y) + 1));
+//					}
+					boxKoordinates = new Point(rndX, rndY);
+					 
+				} while(existsInWallList(wallPositionList, boxKoordinates) || existsInBoxList(boxList, boxKoordinates));
+				
+				Box b = new Box(boxCount, boxKoordinates.x, boxKoordinates.y);
+				boxList.add(b);
+//				System.out.println(b.x + ";" + b.y);
+				System.out.println("Box#" + (boxCount +1) + " von " + boxAnzahl + " Boxen loaded");
+				
+			}
+		}
+
+		private boolean existsInWallList(ArrayList<Point> list, Point p) {
+			boolean found = false;
+			for(Point pTmp : list) {
+				if(pTmp.equals(p)) {
+					found = true;
+					break;
+				}
+			}
+			return found;
 		}
 		
-		public ArrayList<Integer> readJson(String playerName){
+		private boolean existsInBoxList(ArrayList<Box> list, Point p){
+			boolean found = false;
+			for(Box b : list) {
+				if(new Point(b.x, b.y).equals(p)) {
+					found = true;
+					break;
+				}
+			}
+			return found;
+		}
+		
+ 		@SuppressWarnings("unchecked")
+		public void writeJson(int x, int y, int a, int b) {
+
+			// JSONObject wird erstellt und JSONArrays mit den übergebenen
+			// Werten werden erstellt
+			JSONObject obj = new JSONObject();
+			JSONArray player1 = new JSONArray();
+			player1.add(x);
+			player1.add(y);
+			obj.put("player1", player1);
+			JSONArray player2 = new JSONArray();
+			player2.add(a);
+			player2.add(b);
+			obj.put("player2", player2);
+
+			// das JSONObject wird in die .json datei geschrieben
+			try {
+				FileWriter file = new FileWriter("test.json");
+				file.write(obj.toJSONString());
+				file.flush();
+				file.close();
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		public ArrayList<Integer> readJson(String playerName) {
 			JSONParser parser = new JSONParser();
 			JSONArray player = null;
 			ArrayList<Integer> daten = new ArrayList<Integer>();
 			try {
-				
-				//Pfad der .json datei
+
+				// Pfad der .json datei
 				Object obj = parser.parse(new FileReader("test.json"));
 
 				JSONObject jsonObject = (JSONObject) obj;
 
-
-				// dem JSONArray wird das Array mit entsprechenden player namen zugewiesen
+				// dem JSONArray wird das Array mit entsprechenden player namen
+				// zugewiesen
 				player = (JSONArray) jsonObject.get(playerName);
 
-				// die einzelnen werte werden in das zurückzugebende array geschrieben
+				// die einzelnen werte werden in das zurückzugebende array
+				// geschrieben
 				daten.add((Integer.parseInt(player.get(0).toString())));
 				daten.add((Integer.parseInt(player.get(1).toString())));
 
@@ -155,10 +223,9 @@ public class BombermanBorkKnebel {
 				e.printStackTrace();
 			}
 
-
 			return daten;
 		}
-		
+
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
@@ -167,16 +234,16 @@ public class BombermanBorkKnebel {
 			g.drawImage(player1.getImg(), player1.getX(), player1.getY(), 20, 20, null);
 			g.drawImage(player2.getImg(), player2.getX(), player2.getY(), 20, 20, null);
 
-			//g.drawImage(woodImage, 50, 25, 25, 25, null);
-			
-			for(Bomb bomb : bombList){
-			g.drawImage(bomb.getBombImage(), bomb.x, bomb.y, 20, 20, null);
+			// g.drawImage(woodImage, 50, 25, 25, 25, null);
+
+			for (Bomb bomb : bombList) {
+				g.drawImage(bomb.getBombImage(), bomb.x, bomb.y, 20, 20, null);
 			}
-			
-			for(Box box : boxList){
-				g.drawImage(box.getBoxImage(), 50, 25, 25, 25, null);
-				}
-			
+
+			for (Box box : boxList) {
+				g.drawImage(box.getBoxImage(), box.x, box.y, 25, 25, null);
+			}
+
 			if (counter == 0) {
 				for (Point position : wallPositionList) {
 					g.drawImage(wallImage, position.x, position.y, null);
@@ -254,40 +321,37 @@ public class BombermanBorkKnebel {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		
+
 		JButton btnLoadGame = new JButton("Load Game");
 		controlPanel.add(btnLoadGame);
 		btnLoadGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pBombermanGui.player1 = new Player("player1", 	
-													pBombermanGui.readJson("player1").get(0), 
-													pBombermanGui.readJson("player1").get(1), 
-													"src/images/creeper.png", 1, 
-													pBombermanGui.keysPressed);
+				pBombermanGui.player1 = new Player("player1", pBombermanGui.readJson("player1").get(0),
+						pBombermanGui.readJson("player1").get(1), "src/images/creeper.png", 1,
+						pBombermanGui.keysPressed);
 				pBombermanGui.player1.start();
-				
-				pBombermanGui.player2 = new Player("player2", 
-													pBombermanGui.readJson("player2").get(0), 
-													pBombermanGui.readJson("player2").get(1), 
-													"src/images/creeperBlue.png", 2, 
-													pBombermanGui.keysPressed);
+
+				pBombermanGui.player2 = new Player("player2", pBombermanGui.readJson("player2").get(0),
+						pBombermanGui.readJson("player2").get(1), "src/images/creeperBlue.png", 2,
+						pBombermanGui.keysPressed);
 				pBombermanGui.player2.start();
-				
-//				pBombermanGui.paintComponent(g);
-//				g.drawImage(player1.getImg(), player1.getX(), player1.getY(), 20, 20, null);
-//				g.drawImage(player2.getImg(), player2.getX(), player2.getY(), 20, 20, null);
+
+				// pBombermanGui.paintComponent(g);
+				// g.drawImage(player1.getImg(), player1.getX(), player1.getY(),
+				// 20, 20, null);
+				// g.drawImage(player2.getImg(), player2.getX(), player2.getY(),
+				// 20, 20, null);
 			}
 		});
-		
+
 		JButton btnSaveGame = new JButton("Save Game");
 		controlPanel.add(btnSaveGame);
 		btnSaveGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pBombermanGui.writeJson(pBombermanGui.player1.getX(), pBombermanGui.player1.getY(), 
-										pBombermanGui.player2.getX(), pBombermanGui.player2.getY());
+				pBombermanGui.writeJson(pBombermanGui.player1.getX(), pBombermanGui.player1.getY(),
+						pBombermanGui.player2.getX(), pBombermanGui.player2.getY());
 			}
 		});
-		
 
 		f.pack();
 		f.setVisible(true);
