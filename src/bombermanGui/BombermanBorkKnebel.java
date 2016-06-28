@@ -78,12 +78,12 @@ public class BombermanBorkKnebel {
 			// System.out.println(boxList);
 
 			fillBoxList();
-			
+
 			bomb1 = new Bomb(100, 100);
 			new Thread(bomb1).start();
 
-//			box1 = new Box(1, 50, 25);
-//			new Thread(box1).start();
+			// box1 = new Box(1, 50, 25);
+			// new Thread(box1).start();
 
 			// writeJson(25,25,75,75);
 
@@ -112,63 +112,65 @@ public class BombermanBorkKnebel {
 			final int boxRangeLength = 300;
 			final int boxRangeHeight = 325;
 			final int boxAnzahl = 5;
-			
+
 			for (int boxCount = 0; boxCount < boxAnzahl; boxCount++) {
 				int rndX = 0;
 				int rndY = 0;
 				Point boxKoordinates = new Point(rndX, rndY);
 
-				
 				do {
-					int rndX1 = (int)(Math.random()*(boxRangeLength));
-					rndX = maxBoxRange.x + (rndX1 - (rndX1%25));
-					
-					int rndY1 = (int)(Math.random()*(boxRangeHeight));
-					rndY = maxBoxRange.y + (rndY1 - (rndY1%25));
-					
-//					while (rndX % 25 != 0) {
-//						rndX = maxBoxRange.x // Eine Zahl die genau auf einer
-//								+ (int) (Math.random() * ((maxBoxRange.x + boxRangeLength - maxBoxRange.x) + 1));
-//					}
-//					while (rndY % 25 != 0) {
-//						rndY = maxBoxRange.y // Eine Zahl die genau auf einer
-//								+ (int) (Math.random() * ((maxBoxRange.y + boxRangeHeight - maxBoxRange.y) + 1));
-//					}
+					int rndX1 = (int) (Math.random() * (boxRangeLength));
+					rndX = maxBoxRange.x + (rndX1 - (rndX1 % 25));
+
+					int rndY1 = (int) (Math.random() * (boxRangeHeight));
+					rndY = maxBoxRange.y + (rndY1 - (rndY1 % 25));
+
+					// while (rndX % 25 != 0) {
+					// rndX = maxBoxRange.x // Eine Zahl die genau auf einer
+					// + (int) (Math.random() * ((maxBoxRange.x + boxRangeLength
+					// - maxBoxRange.x) + 1));
+					// }
+					// while (rndY % 25 != 0) {
+					// rndY = maxBoxRange.y // Eine Zahl die genau auf einer
+					// + (int) (Math.random() * ((maxBoxRange.y + boxRangeHeight
+					// - maxBoxRange.y) + 1));
+					// }
 					boxKoordinates = new Point(rndX, rndY);
-					 
-				} while(existsInWallList(wallPositionList, boxKoordinates) || existsInBoxList(boxList, boxKoordinates));
-				
+
+				} while (existsInWallList(wallPositionList, boxKoordinates)
+						|| existsInBoxList(boxList, boxKoordinates));
+
 				Box b = new Box(boxCount, boxKoordinates.x, boxKoordinates.y);
 				boxList.add(b);
-//				System.out.println(b.x + ";" + b.y);
-				System.out.println("Box#" + (boxCount +1) + " von " + boxAnzahl + " Boxen loaded");
-				
+				// System.out.println(b.x + ";" + b.y);
+				System.out.println("Box#" + (boxCount + 1) + " von " + boxAnzahl + " Boxen loaded");
+
 			}
 		}
 
 		private boolean existsInWallList(ArrayList<Point> list, Point p) {
 			boolean found = false;
-			for(Point pTmp : list) {
-				if(pTmp.equals(p)) {
+			for (Point pTmp : list) {
+				if (pTmp.equals(p)) {
 					found = true;
 					break;
 				}
 			}
 			return found;
 		}
-		
-		private boolean existsInBoxList(ArrayList<Box> list, Point p){
+
+		private boolean existsInBoxList(ArrayList<Box> list, Point p) {
 			boolean found = false;
-			for(Box b : list) {
-				if(new Point(b.x, b.y).equals(p)) {
+			for (Box b : list) {
+				if (new Point(b.x, b.y).equals(p)) {
 					found = true;
 					break;
 				}
 			}
 			return found;
 		}
-		
- 		@SuppressWarnings("unchecked")
+
+		@SuppressWarnings("unchecked")
 		public void writeJson(int x, int y, int a, int b) {
 
 			// JSONObject wird erstellt und JSONArrays mit den übergebenen
