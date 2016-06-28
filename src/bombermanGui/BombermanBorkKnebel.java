@@ -324,7 +324,7 @@ public class BombermanBorkKnebel {
 			}
 		});
 
-		JButton btnLoadGame = new JButton("Load Game");
+		JButton btnLoadGame = new JButton("Load Local");
 		controlPanel.add(btnLoadGame);
 		btnLoadGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -346,7 +346,7 @@ public class BombermanBorkKnebel {
 			}
 		});
 
-		JButton btnSaveGame = new JButton("Save Game");
+		JButton btnSaveGame = new JButton("Save Local");
 		controlPanel.add(btnSaveGame);
 		btnSaveGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -355,6 +355,35 @@ public class BombermanBorkKnebel {
 			}
 		});
 
+		JButton btnSaveRemote = new JButton("Save Remote");
+		controlPanel.add(btnSaveRemote);
+		btnSaveRemote.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ConnectToDatabase.writeToDatabase(pBombermanGui.player1.getX(), pBombermanGui.player1.getY(),
+						"player1");
+				ConnectToDatabase.writeToDatabase(pBombermanGui.player2.getX(), pBombermanGui.player2.getY(),
+						"player2");
+			}
+		});
+
+		JButton btnLoadRemote = new JButton("Load Remote");
+		controlPanel.add(btnLoadRemote);
+		btnLoadRemote.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				pBombermanGui.player1 = new Player("player1",
+						ConnectToDatabase.getPositionFromDatabase("player1").get(0),
+						ConnectToDatabase.getPositionFromDatabase("player1").get(1), "src/images/creeper.png", 1,
+						pBombermanGui.keysPressed);
+				pBombermanGui.player1.start();
+
+				pBombermanGui.player2 = new Player("player2",
+						ConnectToDatabase.getPositionFromDatabase("player2").get(0),
+						ConnectToDatabase.getPositionFromDatabase("player2").get(1), "src/images/creeperBlue.png", 2,
+						pBombermanGui.keysPressed);
+				pBombermanGui.player2.start();
+			}
+		});
 		f.pack();
 		f.setVisible(true);
 
