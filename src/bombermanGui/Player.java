@@ -112,6 +112,26 @@ public class Player extends Thread {
 		new Thread(bombe).start();
 	}
 
+	public boolean moveVertical() {
+		boolean collission = true;
+		for (Point p : BombermanBorkKnebel.bombermanGui.wallPositionList) {
+			if ((this.x>=p.x)&& (this.x <= p.x+25) &&(this.y - stepSize) <= (p.y + 25) && this.y + stepSize >= p.y) {
+				collission = false;
+			}
+		}
+		return collission;
+	}
+	
+	public boolean moveHorizontal() {
+		boolean collission = true;
+		for (Point p : BombermanBorkKnebel.bombermanGui.wallPositionList) {
+			if ((this.y>=p.y)&& (this.y <= p.y+25) &&(this.x + stepSize) >= (p.x + 25) && this.x + stepSize >= p.x) {
+				collission = false;
+			}
+		}
+		return collission;
+	}
+
 	/*
 	 * Die Update-Funktion lässt den Spielstand um eine bestimmte Zeitspanne
 	 * (period) voranschreiten, wobei Spielregeln/-logik implementiert und
@@ -121,32 +141,31 @@ public class Player extends Thread {
 
 		// über alle gedrückten Tasten iterieren
 		int pressKey = 0;
-		
+
 		if (this.whichPlayer == 1) {
 			for (int key : keysPressed) {
 
 				if (key == KeyEvent.VK_UP) {
-					for (Point point : bombermanGui.wallPositionList) {
-						if (this.y <= (point.y) || this.y >= (point.y + 25)) {
-							this.setY(Math.max(0, this.getY() - stepSize));
-						}
+					if (this.moveVertical()) {
+						this.setY(Math.max(0, this.getY() - stepSize));
 					}
 				}
 				if (key == KeyEvent.VK_DOWN) {
-					for (Point point : bombermanGui.wallPositionList) {
-						if ((this.y + 20) <= (point.y)) {
-							this.setY(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize,
-									this.getY() + stepSize));
-						}
+					if (this.moveVertical()) {
+					this.setY(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getY() + stepSize));
 					}
 				}
 				if (key == KeyEvent.VK_LEFT) {
+					if(moveHorizontal()){
 					this.setX(Math.max(0, this.getX() - stepSize));
+					}
 				}
 				if (key == KeyEvent.VK_RIGHT) {
+					if(moveHorizontal()){
 					this.setX(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getX() + stepSize));
+					}
 				}
-				
+
 				if (key == KeyEvent.VK_B) {
 					pressKey = key;
 					this.drawBomb();
@@ -157,20 +176,24 @@ public class Player extends Thread {
 			for (int key : keysPressed) {
 
 				if (key == KeyEvent.VK_W) {
-					for (Point point : bombermanGui.wallPositionList) {
-						if (this.y >= (point.y + 25)) {
-							this.setY(Math.max(0, this.getY() - stepSize));
-						}
+					if (this.moveVertical()) {
+						this.setY(Math.max(0, this.getY() - stepSize));
 					}
 				}
 				if (key == KeyEvent.VK_S) {
+					if (this.moveVertical()) {
 					this.setY(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getY() + stepSize));
+					}
 				}
 				if (key == KeyEvent.VK_A) {
+					if(moveHorizontal()){
 					this.setX(Math.max(0, this.getX() - stepSize));
+					}
 				}
 				if (key == KeyEvent.VK_D) {
+					if(moveHorizontal()){
 					this.setX(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getX() + stepSize));
+					}
 				}
 				if (key == KeyEvent.VK_R) {
 					pressKey = key;
@@ -178,10 +201,10 @@ public class Player extends Thread {
 					System.out.println("drawbomb Test");
 				}
 			}
-			
+
 		}
-		if(pressKey > 0){
-			keysPressed.remove((Integer)pressKey);
+		if (pressKey > 0) {
+			keysPressed.remove((Integer) pressKey);
 		}
 	}
 }
