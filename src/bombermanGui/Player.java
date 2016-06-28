@@ -114,7 +114,7 @@ public class Player extends Thread {
 
 	public boolean moveVertical() {
 		boolean collission = true;
-		for (Point p : BombermanBorkKnebel.bombermanGui.wallPositionList) {
+		for (Point p : BombermanBorkKnebel.bombermanGui.wallPositionListOutside) {
 			if ((this.x>=p.x)&& (this.x <= p.x+25) &&(this.y - stepSize) <= (p.y + 25) && this.y + stepSize >= p.y) {
 				collission = false;
 			}
@@ -124,7 +124,7 @@ public class Player extends Thread {
 	
 	public boolean moveHorizontal() {
 		boolean collission = true;
-		for (Point p : BombermanBorkKnebel.bombermanGui.wallPositionList) {
+		for (Point p : BombermanBorkKnebel.bombermanGui.wallPositionListOutside) {
 			if ((this.y>=p.y)&& (this.y <= p.y+25) &&(this.x + stepSize) >= (p.x + 25) && this.x + stepSize >= p.x) {
 				collission = false;
 			}

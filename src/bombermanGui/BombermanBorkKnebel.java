@@ -42,7 +42,8 @@ public class BombermanBorkKnebel {
 
 		private static final long serialVersionUID = 1L;
 		Point playerPosition = new Point(25, 25);
-		public static ArrayList<Point> wallPositionList = new ArrayList<>();
+		public static ArrayList<Point> wallPositionListOutside = new ArrayList<>();
+		public static ArrayList<Point> wallPositionListInside = new ArrayList<>();
 		public static ArrayList<Bomb> bombList = new ArrayList<>();
 		public static ArrayList<Box> boxList = new ArrayList<>();
 		Point tntPOS = new Point(6, 6);
@@ -64,7 +65,7 @@ public class BombermanBorkKnebel {
 		bombermanGui() {
 			setPreferredSize(new Dimension(WIDTH, HEIGHT));
 			setFocusable(true);
-			fillWallPositionList();
+			fillWallPositionListOutside();
 
 			// writeJson(100,25,75,75);
 
@@ -102,7 +103,7 @@ public class BombermanBorkKnebel {
 			background = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 			background.getGraphics().setColor(Color.GRAY);
 			background.getGraphics().fillRect(0, 0, WIDTH, HEIGHT);
-			for (Point position : wallPositionList) {
+			for (Point position : wallPositionListOutside) {
 				background.getGraphics().drawImage(wallImage, position.x, position.y, null);
 			}
 		}
@@ -137,7 +138,7 @@ public class BombermanBorkKnebel {
 					// }
 					boxKoordinates = new Point(rndX, rndY);
 
-				} while (existsInWallList(wallPositionList, boxKoordinates)
+				} while (existsInWallList(wallPositionListOutside, boxKoordinates)
 						|| existsInBoxList(boxList, boxKoordinates));
 
 				Box b = new Box(boxCount, boxKoordinates.x, boxKoordinates.y);
@@ -247,26 +248,29 @@ public class BombermanBorkKnebel {
 			}
 
 			if (counter == 0) {
-				for (Point position : wallPositionList) {
+				for (Point position : wallPositionListOutside) {
 					g.drawImage(wallImage, position.x, position.y, null);
 				}
 			}
 			counter++;
 		}
 
-		public void fillWallPositionList() {
+		public void fillWallPositionListOutside() {
 			for (int y = 0; y < HEIGHT; y += 25) {
-				wallPositionList.add(new Point(0, y));
-				wallPositionList.add(new Point(WIDTH - 25, y));
+				wallPositionListOutside.add(new Point(0, y));
+				wallPositionListOutside.add(new Point(WIDTH - 25, y));
 			}
 			for (int x = 0; x < WIDTH; x += 25) {
-				wallPositionList.add(new Point(x, 0));
-				wallPositionList.add(new Point(x, HEIGHT - 25));
+				wallPositionListOutside.add(new Point(x, 0));
+				wallPositionListOutside.add(new Point(x, HEIGHT - 25));
 			}
+		}
+
+		public void fillWallPositionListInside() {
 			// Die Wände innerhalb des Spielfeldes
 			for (int y = 0; y < HEIGHT; y += 50) {
 				for (int x = 0; x < WIDTH; x += 50) {
-					wallPositionList.add(new Point(x, y));
+					wallPositionListInside.add(new Point(x, y));
 				}
 			}
 		}
