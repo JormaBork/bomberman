@@ -114,18 +114,22 @@ public class Player extends Thread {
 
 	public boolean moveVertical() {
 		boolean collission = true;
-		for (Point p : BombermanBorkKnebel.bombermanGui.wallPositionListOutside) {
-			if ((this.x>=p.x)&& (this.x <= p.x+25) &&(this.y - stepSize) <= (p.y + 25) && this.y + stepSize >= p.y) {
+		for (Point p : BombermanBorkKnebel.bombermanGui.wallPositionListInside) {
+			if ((this.x >= p.x) && (this.x <= p.x + 25)
+			// && (this.y - stepSize) <= (p.y + 25) || (this.y + stepSize) >=
+			// p.y
+			) {
 				collission = false;
 			}
 		}
 		return collission;
 	}
-	
+
 	public boolean moveHorizontal() {
 		boolean collission = true;
-		for (Point p : BombermanBorkKnebel.bombermanGui.wallPositionListOutside) {
-			if ((this.y>=p.y)&& (this.y <= p.y+25) &&(this.x + stepSize) >= (p.x + 25) && this.x + stepSize >= p.x) {
+		for (Point p : BombermanBorkKnebel.bombermanGui.wallPositionListInside) {
+			if ((this.y >= p.y) && (this.y <= p.y + 25) && (this.x + stepSize) >= (p.x + 25)
+					|| this.x + stepSize >= p.x) {
 				collission = false;
 			}
 		}
@@ -146,24 +150,26 @@ public class Player extends Thread {
 			for (int key : keysPressed) {
 
 				if (key == KeyEvent.VK_UP) {
-					if (this.moveVertical()) {
-						this.setY(Math.max(0, this.getY() - stepSize));
+					if (this.moveVertical() 
+							&& (this.y - stepSize) >= (BombermanBorkKnebel.pBombermanGui.HEIGHT + 25)) {
+						this.setY(Math.max(25, this.getY() - stepSize));
 					}
 				}
 				if (key == KeyEvent.VK_DOWN) {
-					if (this.moveVertical()) {
-					this.setY(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getY() + stepSize));
+					if (this.moveVertical()
+							&& ((this.y + 20 + stepSize) <= (BombermanBorkKnebel.pBombermanGui.HEIGHT - 25))) {
+						this.setY(Math.min(BombermanBorkKnebel.pBombermanGui.HEIGHT - 45, this.getY() + stepSize));
 					}
 				}
 				if (key == KeyEvent.VK_LEFT) {
-					if(moveHorizontal()){
-					this.setX(Math.max(0, this.getX() - stepSize));
-					}
+					// if (moveHorizontal()) {
+					this.setX(Math.max(25, this.getX() - stepSize));
+					// }
 				}
 				if (key == KeyEvent.VK_RIGHT) {
-					if(moveHorizontal()){
-					this.setX(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getX() + stepSize));
-					}
+					// if (moveHorizontal()) {
+					this.setX(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - 45, this.getX() + stepSize));
+					// }
 				}
 
 				if (key == KeyEvent.VK_B) {
@@ -176,24 +182,26 @@ public class Player extends Thread {
 			for (int key : keysPressed) {
 
 				if (key == KeyEvent.VK_W) {
-					if (this.moveVertical()) {
-						this.setY(Math.max(0, this.getY() - stepSize));
+					if (this.moveVertical() 
+							&& ((this.y - stepSize) >= (BombermanBorkKnebel.pBombermanGui.HEIGHT + 25))) {
+						this.setY(Math.max(25, this.getY() - stepSize));
 					}
 				}
 				if (key == KeyEvent.VK_S) {
-					if (this.moveVertical()) {
-					this.setY(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getY() + stepSize));
+					if (this.moveVertical()
+							&& ((this.y + 20 + stepSize) <= (BombermanBorkKnebel.pBombermanGui.HEIGHT - 25))) {
+						this.setY(Math.min(BombermanBorkKnebel.pBombermanGui.HEIGHT - 45, this.getY() + stepSize));
 					}
 				}
 				if (key == KeyEvent.VK_A) {
-					if(moveHorizontal()){
-					this.setX(Math.max(0, this.getX() - stepSize));
-					}
+					// if (moveHorizontal()) {
+					this.setX(Math.max(25, this.getX() - stepSize));
+					// }
 				}
 				if (key == KeyEvent.VK_D) {
-					if(moveHorizontal()){
-					this.setX(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - stepSize, this.getX() + stepSize));
-					}
+					// if (moveHorizontal()) {
+					this.setX(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH - 45, this.getX() + stepSize));
+					// }
 				}
 				if (key == KeyEvent.VK_R) {
 					pressKey = key;

@@ -66,6 +66,7 @@ public class BombermanBorkKnebel {
 			setPreferredSize(new Dimension(WIDTH, HEIGHT));
 			setFocusable(true);
 			fillWallPositionListOutside();
+			fillWallPositionListInside();
 
 			// writeJson(100,25,75,75);
 
@@ -106,6 +107,9 @@ public class BombermanBorkKnebel {
 			for (Point position : wallPositionListOutside) {
 				background.getGraphics().drawImage(wallImage, position.x, position.y, null);
 			}
+			for (Point position : wallPositionListInside) {
+				background.getGraphics().drawImage(wallImage, position.x, position.y, null);
+			}
 		}
 
 		public void fillBoxList() {
@@ -139,7 +143,7 @@ public class BombermanBorkKnebel {
 					boxKoordinates = new Point(rndX, rndY);
 
 				} while (existsInWallList(wallPositionListOutside, boxKoordinates)
-						|| existsInBoxList(boxList, boxKoordinates));
+						|| existsInBoxList(boxList, boxKoordinates)||existsInWallList(wallPositionListInside, boxKoordinates)) ;
 
 				Box b = new Box(boxCount, boxKoordinates.x, boxKoordinates.y);
 				boxList.add(b);
@@ -249,6 +253,9 @@ public class BombermanBorkKnebel {
 
 			if (counter == 0) {
 				for (Point position : wallPositionListOutside) {
+					g.drawImage(wallImage, position.x, position.y, null);
+				}
+				for (Point position : wallPositionListInside) {
 					g.drawImage(wallImage, position.x, position.y, null);
 				}
 			}
