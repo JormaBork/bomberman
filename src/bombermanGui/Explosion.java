@@ -21,9 +21,9 @@ public class Explosion implements Runnable {
 	private static final long serialVersionUID = 1L;
 	int x, y;
 	BufferedImage fireImage;
-	
-	public Explosion(int x, int y){
-		
+
+	public Explosion(int x, int y) {
+
 		try {
 			fireImage = ImageIO.read(new File("src/images/Fire_animated.gif"));
 		} catch (IOException e) {
@@ -66,8 +66,6 @@ public class Explosion implements Runnable {
 			e.printStackTrace();
 		}
 		BombermanBorkKnebel.bombermanGui.explosionList.removeAll(bombermanGui.explosionList);
-		System.out.println("fire test");
 	}
-
 
 }

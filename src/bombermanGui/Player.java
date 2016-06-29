@@ -23,26 +23,17 @@ import bombermanGui.BombermanBorkKnebel.bombermanGui;
 
 public class Player extends Thread {
 
-	private String name;
-	private int x, y;
-	private String img;
+	int x, y;
 	private BufferedImage playerImage;
-	private final boolean destroyable = true;
-	private JLabel playerLabel;
 	private Graphics g;
-	private ImageIcon playerIcon;
-	boolean end = false;
 	int stepSize = 1;
 	int whichPlayer;
 	Vector<Integer> keysPressed;
 
 	public Player(String name, int x, int y, String img, int whichPlayer, Vector<Integer> keysPressed) {
 		super();
-		this.name = name;
 		this.y = y;
 		this.x = x;
-
-		this.img = img;
 		this.whichPlayer = whichPlayer;
 		this.keysPressed = keysPressed;
 
@@ -53,6 +44,7 @@ public class Player extends Thread {
 			e.printStackTrace();
 		}
 
+		BombermanBorkKnebel.bombermanGui.playerList.add(this);
 	}
 
 	@Override
@@ -80,22 +72,6 @@ public class Player extends Thread {
 		this.y = y;
 	}
 
-	public ImageIcon getPlayerIcon() {
-		return playerIcon;
-	}
-
-	public void setPlayerIcon(ImageIcon playerIcon) {
-		this.playerIcon = playerIcon;
-	}
-
-	public JLabel getPlayerLabel() {
-		return playerLabel;
-	}
-
-	public void setPlayerLabel(JLabel playerLabel) {
-		this.playerLabel = playerLabel;
-	}
-
 	public Graphics getG() {
 		return g;
 	}
@@ -104,30 +80,9 @@ public class Player extends Thread {
 		this.g = g;
 	}
 
-	public boolean isDestroyable() {
-		return destroyable;
-	}
-
 	public void drawBomb() {
 		Bomb bombe = new Bomb(this.x, this.y);
 		new Thread(bombe).start();
-	}
-
-	public Point moveUp() {
-		// boolean collission = true;
-		// for (Point p :
-		// BombermanBorkKnebel.bombermanGui.wallPositionListInside) {
-		// if (this.x + 20 + stepSize <= p.x && this.x >= p.x - 25) {
-		// if ((this.x >= p.x) && (this.x <= p.x + 25) && (this.y - stepSize) <=
-		// (p.y + 25)
-		// || (this.y + stepSize) >= p.y) {
-		// collission = false;
-		// }
-		// }
-		// }
-		// return collission;
-		Point newPosition = new Point(this.x, this.y - stepSize);
-		return newPosition;
 	}
 
 	/*
@@ -162,6 +117,11 @@ public class Player extends Thread {
 				allBoxes.addAll(BombermanBorkKnebel.bombermanGui.wallPositionListInside);
 				for (Box b : BombermanBorkKnebel.bombermanGui.boxList) {
 					allBoxes.add(new Point(b.x, b.y));
+				for(Player p: BombermanBorkKnebel.bombermanGui.playerList){
+					if(p!=this){
+						allBoxes.add(new Point(p.x,p.y));
+					}
+				}
 				}
 
 				if (newPosition.x > 25 && newPosition.x + 20 < BombermanBorkKnebel.pBombermanGui.WIDTH - 25) {
@@ -185,7 +145,6 @@ public class Player extends Thread {
 				if (key == KeyEvent.VK_B) {
 					pressKey = key;
 					this.drawBomb();
-					System.out.println("drawbomb Test");
 				}
 			}
 		} else if (this.whichPlayer == 2) {
@@ -208,7 +167,13 @@ public class Player extends Thread {
 				allBoxes.addAll(BombermanBorkKnebel.bombermanGui.wallPositionListInside);
 				for (Box b : BombermanBorkKnebel.bombermanGui.boxList) {
 					allBoxes.add(new Point(b.x, b.y));
+				for(Player p: BombermanBorkKnebel.bombermanGui.playerList){
+					if(p!=this){
+						allBoxes.add(new Point(p.x,p.y));
+					}
 				}
+				}
+
 
 				if (newPosition.x > 25 && newPosition.x + 20 < BombermanBorkKnebel.pBombermanGui.WIDTH - 25) {
 					if (newPosition.y > 25 && newPosition.y + 20 < BombermanBorkKnebel.pBombermanGui.HEIGHT - 25) {
@@ -230,7 +195,6 @@ public class Player extends Thread {
 				if (key == KeyEvent.VK_R) {
 					pressKey = key;
 					this.drawBomb();
-					System.out.println("drawbomb Test");
 				}
 			}
 

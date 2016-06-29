@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
 
@@ -64,12 +66,6 @@ public class Bomb implements Runnable {
 
 	public void removeBox() {
 
-		ArrayList<Point> boxes = new ArrayList<>();
-
-		for (Box b : BombermanBorkKnebel.bombermanGui.boxList) {
-			boxes.add(new Point(b.x, b.y));
-		}
-
 		int left = this.x - 25;
 		int right = this.x + 45;
 		int top = this.y - 25;
@@ -86,6 +82,25 @@ public class Bomb implements Runnable {
 		BombermanBorkKnebel.bombermanGui.boxList.removeAll(toDelete);
 	}
 
+	public void removePlayer() {
+
+		int left = this.x - 25;
+		int right = this.x + 45;
+		int top = this.y - 25;
+		int bottom = this.y + 45;
+
+		ArrayList<Player> pToDelete = new ArrayList<>();
+		for (Player p : BombermanBorkKnebel.bombermanGui.playerList) {
+			if (!(p.x + 25 < left || p.x > right)) {
+				if (!(p.y + 25 < top || p.y > bottom)) {
+					pToDelete.add(p);
+				}
+			}
+		}
+		BombermanBorkKnebel.bombermanGui.playerList.removeAll(pToDelete);
+		System.out.println("Game Over");
+	}
+
 	@Override
 	public void run() {
 		try {
@@ -95,10 +110,10 @@ public class Bomb implements Runnable {
 		}
 		Explosion ex = new Explosion(this.x, this.y);
 		new Thread(ex).start();
-		BombermanBorkKnebel.bombermanGui.fillExplosionList(ex.x,ex.y);
+		BombermanBorkKnebel.bombermanGui.fillExplosionList(ex.x, ex.y);
 
 		this.removeBox();
+		this.removePlayer();
 		BombermanBorkKnebel.bombermanGui.bombList.remove(this);
-		// System.out.println("test");
 	}
 }

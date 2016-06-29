@@ -47,6 +47,7 @@ public class BombermanBorkKnebel {
 		public static ArrayList<Bomb> bombList = new ArrayList<>();
 		public static ArrayList<Box> boxList = new ArrayList<>();
 		public static ArrayList<Explosion> explosionList = new ArrayList<>();
+		public static ArrayList<Player> playerList = new ArrayList<>();
 		Point tntPOS = new Point(6, 6);
 		// Point doorPosition = new Point(0, 5);
 		Point[] snakePositions = { new Point(30, 2), null, null, null, null };
@@ -235,9 +236,10 @@ public class BombermanBorkKnebel {
 			g.drawImage(background, 0, 0, null);
 			
 			// Figuren zeichnen
-			g.drawImage(player1.getImg(), player1.getX(), player1.getY(), 20, 20, null);
-			g.drawImage(player2.getImg(), player2.getX(), player2.getY(), 20, 20, null);
-
+			for(Player p : playerList){
+			g.drawImage(p.getImg(), p.getX(), p.getY(), 20, 20, null);
+//			g.drawImage(player2.getImg(), player2.getX(), player2.getY(), 20, 20, null);
+			}
 			// Bomben zeichnen
 			for (Bomb bomb : bombList) {
 				g.drawImage(bomb.getBombImage(), bomb.x, bomb.y, 20, 20, null);
