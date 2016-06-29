@@ -53,8 +53,6 @@ public class BombermanBorkKnebel {
 		BufferedImage wallImage, woodImage, tntImage, background;
 		BufferedImage imageDestroyable;
 		Player player1, player2;
-		Bomb bomb1;
-		Box box1;
 		boolean rich = false;
 		boolean end = false;
 		final public static int WIDTH = 775;
@@ -81,11 +79,6 @@ public class BombermanBorkKnebel {
 
 			fillBoxList();
 
-			bomb1 = new Bomb(100, 100);
-			new Thread(bomb1).start();
-
-			// box1 = new Box(1, 50, 25);
-			// new Thread(box1).start();
 
 			// writeJson(25,25,75,75);
 
@@ -116,7 +109,7 @@ public class BombermanBorkKnebel {
 			final Point maxBoxRange = new Point(225, 25);
 			final int boxRangeLength = 300;
 			final int boxRangeHeight = 325;
-			final int boxAnzahl = 5;
+			final int boxAnzahl = 10;
 
 			for (int boxCount = 0; boxCount < boxAnzahl; boxCount++) {
 				int rndX = 0;
