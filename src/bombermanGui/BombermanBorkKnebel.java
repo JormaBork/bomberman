@@ -46,6 +46,7 @@ public class BombermanBorkKnebel {
 		public static ArrayList<Point> wallPositionListInside = new ArrayList<>();
 		public static ArrayList<Bomb> bombList = new ArrayList<>();
 		public static ArrayList<Box> boxList = new ArrayList<>();
+		public static ArrayList<Explosion> explosionList = new ArrayList<>();
 		Point tntPOS = new Point(6, 6);
 		// Point doorPosition = new Point(0, 5);
 		Point[] snakePositions = { new Point(30, 2), null, null, null, null };
@@ -110,6 +111,15 @@ public class BombermanBorkKnebel {
 			for (Point position : wallPositionListInside) {
 				background.getGraphics().drawImage(wallImage, position.x, position.y, null);
 			}
+		}
+		
+		public static void fillExplosionList(int x, int y){
+			explosionList.add(new Explosion(x,y));
+			explosionList.add(new Explosion(x+25,y));
+			explosionList.add(new Explosion(x-25,y));
+			explosionList.add(new Explosion(x,y+25));
+			explosionList.add(new Explosion(x,y-25));
+			
 		}
 
 		public void fillBoxList() {
@@ -251,6 +261,12 @@ public class BombermanBorkKnebel {
 				g.drawImage(box.getBoxImage(), box.x, box.y, 25, 25, null);
 			}
 
+//			if (explosionList.size() != 0){
+			for (Explosion ex : explosionList){
+				g.drawImage(ex.getFireImage(), ex.x, ex.y, 25,25, null);
+//			}
+			}
+			
 			if (counter == 0) {
 				for (Point position : wallPositionListOutside) {
 					g.drawImage(wallImage, position.x, position.y, null);
@@ -303,6 +319,7 @@ public class BombermanBorkKnebel {
 
 			return true; // nichts weiter mit dem KeyEvent machen
 		}
+
 	}
 
 	public static void main(String[] args) {

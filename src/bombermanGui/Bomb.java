@@ -1,17 +1,21 @@
 package bombermanGui;
 
+import java.awt.Image;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 public class Bomb implements Runnable {
 
 	int bombNumber, x, y;
 	BufferedImage bombImage;
 
+	
 	public Bomb(int x, int y) {
 
 		try {
@@ -25,6 +29,7 @@ public class Bomb implements Runnable {
 		BombermanBorkKnebel.bombermanGui.bombList.add(this);
 	}
 
+	
 	public int getBombNumber() {
 		return bombNumber;
 	}
@@ -68,7 +73,11 @@ public class Bomb implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
+		
+		BombermanBorkKnebel.bombermanGui.fillExplosionList(this.x, this.y);
+		Explosion ex = new Explosion(this.x, this.y);
+		new Thread(ex).start();
+		
 		BombermanBorkKnebel.bombermanGui.bombList.remove(this);
 		System.out.println("test");
 	}

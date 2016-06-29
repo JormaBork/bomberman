@@ -19,7 +19,6 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import bombermanGui.BombermanBorkKnebel.bombermanGui;
 
 public class Player extends Thread {
 
