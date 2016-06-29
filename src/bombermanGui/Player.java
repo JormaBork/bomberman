@@ -19,6 +19,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import bombermanGui.BombermanBorkKnebel.bombermanGui;
 
 public class Player extends Thread {
 
@@ -129,17 +130,6 @@ public class Player extends Thread {
 		return newPosition;
 	}
 
-	public boolean moveHorizontal() {
-		boolean collission = true;
-		for (Point p : BombermanBorkKnebel.bombermanGui.wallPositionListInside) {
-			if ((this.y >= p.y) && (this.y <= p.y + 25) && (this.x + stepSize) >= (p.x + 25)
-					|| this.x + stepSize >= p.x) {
-				collission = false;
-			}
-		}
-		return collission;
-	}
-
 	/*
 	 * Die Update-Funktion lässt den Spielstand um eine bestimmte Zeitspanne
 	 * (period) voranschreiten, wobei Spielregeln/-logik implementiert und
@@ -157,32 +147,15 @@ public class Player extends Thread {
 
 				if (key == KeyEvent.VK_UP) {
 					newPosition = new Point(this.x, this.y - stepSize);
-					//// if (this.moveVertical() && (this.y - stepSize) >=
-					//// (BombermanBorkKnebel.pBombermanGui.HEIGHT + 25)) {
-					// this.setY(Math.max(25, this.getY() - stepSize));
-					// }
 				}
 				if (key == KeyEvent.VK_DOWN) {
 					newPosition = new Point(this.x, this.y + stepSize);
-					// if (this.moveVertical()
-					// && ((this.y + 20 + stepSize) <=
-					// (BombermanBorkKnebel.pBombermanGui.HEIGHT - 25))) {
-					// this.setY(Math.min(BombermanBorkKnebel.pBombermanGui.HEIGHT
-					// - 45, this.getY() + stepSize));
-					// }
 				}
 				if (key == KeyEvent.VK_LEFT) {
 					newPosition = new Point(this.x - stepSize, this.y);
-					// if (moveHorizontal()) {
-					// this.setX(Math.max(25, this.getX() - stepSize));
-					// // }
 				}
 				if (key == KeyEvent.VK_RIGHT) {
 					newPosition = new Point(this.x + stepSize, this.y);
-					// if (moveHorizontal()) {
-					// this.setX(Math.min(BombermanBorkKnebel.pBombermanGui.WIDTH
-					// - 45, this.getX() + stepSize));
-					// // }
 				}
 
 				ArrayList<Point> allBoxes = new ArrayList<>();

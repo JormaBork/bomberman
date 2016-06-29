@@ -20,10 +20,7 @@ public class Explosion implements Runnable {
 	 */
 	private static final long serialVersionUID = 1L;
 	int x, y;
-	public Image image;
-	public ImageIcon fire;
 	BufferedImage fireImage;
-	Timer timer;
 	
 	public Explosion(int x, int y){
 		
@@ -35,8 +32,6 @@ public class Explosion implements Runnable {
 
 		this.x = x;
 		this.y = y;
-		
-//		BombermanBorkKnebel.bombermanGui.explosionList.add(this);
 	}
 
 	public int getX() {
@@ -53,22 +48,6 @@ public class Explosion implements Runnable {
 
 	public void setY(int y) {
 		this.y = y;
-	}
-
-	public Image getImage() {
-		return image;
-	}
-
-	public void setImage(Image image) {
-		this.image = image;
-	}
-
-	public ImageIcon getFire() {
-		return fire;
-	}
-
-	public void setFire(ImageIcon fire) {
-		this.fire = fire;
 	}
 
 	public BufferedImage getFireImage() {

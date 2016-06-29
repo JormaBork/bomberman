@@ -66,8 +66,7 @@ public class BombermanBorkKnebel {
 			setFocusable(true);
 			fillWallPositionListOutside();
 			fillWallPositionListInside();
-
-			// writeJson(100,25,75,75);
+			fillBoxList();
 
 			player1 = new Player("player1", readJson("player1").get(0), readJson("player1").get(1),
 					"src/images/creeper.png", 1, keysPressed);
@@ -75,13 +74,6 @@ public class BombermanBorkKnebel {
 			player2 = new Player("player2", readJson("player2").get(0), readJson("player2").get(1),
 					"src/images/creeperBlue.png", 2, keysPressed);
 			player2.start();
-
-			// System.out.println(boxList);
-
-			fillBoxList();
-
-
-			// writeJson(25,25,75,75);
 
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 
@@ -119,7 +111,7 @@ public class BombermanBorkKnebel {
 			final Point maxBoxRange = new Point(225, 25);
 			final int boxRangeLength = 300;
 			final int boxRangeHeight = 325;
-			final int boxAnzahl = 85;
+			final int boxAnzahl = 20;
 
 			for (int boxCount = 0; boxCount < boxAnzahl; boxCount++) {
 				int rndX = 0;
@@ -150,7 +142,6 @@ public class BombermanBorkKnebel {
 
 				Box b = new Box(boxCount, boxKoordinates.x, boxKoordinates.y);
 				boxList.add(b);
-				// System.out.println(b.x + ";" + b.y);
 				System.out.println("Box#" + (boxCount + 1) + " von " + boxAnzahl + " Boxen loaded");
 
 			}
@@ -239,25 +230,29 @@ public class BombermanBorkKnebel {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
+			
+			// Hintergund zeichnen
 			g.drawImage(background, 0, 0, null);
+			
 			// Figuren zeichnen
 			g.drawImage(player1.getImg(), player1.getX(), player1.getY(), 20, 20, null);
 			g.drawImage(player2.getImg(), player2.getX(), player2.getY(), 20, 20, null);
 
-			// g.drawImage(woodImage, 50, 25, 25, 25, null);
-
+			// Bomben zeichnen
 			for (Bomb bomb : bombList) {
 				g.drawImage(bomb.getBombImage(), bomb.x, bomb.y, 20, 20, null);
 			}
 
+			// Boxen zeichnen
 			for (Box box : boxList) {
 				g.drawImage(box.getBoxImage(), box.x, box.y, 25, 25, null);
 			}
 
-//			if (explosionList.size() != 0){
+			// Explosionen zeichnen
+			if(explosionList!=null){
 			for (Explosion ex : explosionList){
-				g.drawImage(ex.getFireImage(), ex.x, ex.y, 25,25, null);
-//			}
+				g.drawImage(ex.getFireImage(), ex.x, ex.y, 20,20, null);
+			}
 			}
 			
 			if (counter == 0) {

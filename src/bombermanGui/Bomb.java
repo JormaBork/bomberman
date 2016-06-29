@@ -17,7 +17,6 @@ public class Bomb implements Runnable {
 	int bombNumber, x, y;
 	BufferedImage bombImage;
 
-	
 	public Bomb(int x, int y) {
 
 		try {
@@ -31,7 +30,6 @@ public class Bomb implements Runnable {
 		BombermanBorkKnebel.bombermanGui.bombList.add(this);
 	}
 
-	
 	public int getBombNumber() {
 		return bombNumber;
 	}
@@ -64,44 +62,30 @@ public class Bomb implements Runnable {
 		this.bombImage = bombImage;
 	}
 
-	public void removeBox(){
-		
+	public void removeBox() {
+
 		ArrayList<Point> boxes = new ArrayList<>();
-		
+
 		for (Box b : BombermanBorkKnebel.bombermanGui.boxList) {
 			boxes.add(new Point(b.x, b.y));
 		}
-		
-		int left = this.x-25;
+
+		int left = this.x - 25;
 		int right = this.x + 45;
-		int top = this.y-25;
+		int top = this.y - 25;
 		int bottom = this.y + 45;
-		
+
 		ArrayList<Box> toDelete = new ArrayList<>();
 		for (Box b : BombermanBorkKnebel.bombermanGui.boxList) {
-			if(!( b.x+25<left || b.x>right ) ){
-				if(!( b.y+25 <top || b.y>bottom )){
+			if (!(b.x + 25 < left || b.x > right)) {
+				if (!(b.y + 25 < top || b.y > bottom)) {
 					toDelete.add(b);
 				}
 			}
 		}
 		BombermanBorkKnebel.bombermanGui.boxList.removeAll(toDelete);
-//		for (Point p : boxes) {
-//			if (this.y>=p.y+25 && (this.y - 15) <= (p.y + 25) && (this.x >= p.x && (this.x+15) <= (p.x + 25))) {
-//				BombermanBorkKnebel.bombermanGui.boxList.remove(boxes.indexOf(p));
-//			}
-//			if (this.y<p.y && (this.y + 15) >= (p.y) && (this.x >= p.x || this.x <= (p.x + 25))) {
-//				BombermanBorkKnebel.bombermanGui.boxList.remove(boxes.indexOf(p));
-//			}
-//			if (this.x>p.x && (this.x - 15) <= (p.x+25) && (this.y >= p.y || this.y <= (p.y + 25))) {
-//				BombermanBorkKnebel.bombermanGui.boxList.remove(boxes.indexOf(p));
-//			}
-//			if (this.x<p.x && (this.x + 15) >= (p.x) && (this.y>= p.y || this.y <= (p.y + 25))) {
-//				BombermanBorkKnebel.bombermanGui.boxList.remove(boxes.indexOf(p));
-//			}
-//		}
 	}
-	
+
 	@Override
 	public void run() {
 		try {
@@ -109,11 +93,10 @@ public class Bomb implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
-		BombermanBorkKnebel.bombermanGui.fillExplosionList(this.x, this.y);
 		Explosion ex = new Explosion(this.x, this.y);
 		new Thread(ex).start();
-		
+		BombermanBorkKnebel.bombermanGui.fillExplosionList(ex.x,ex.y);
+
 		this.removeBox();
 		BombermanBorkKnebel.bombermanGui.bombList.remove(this);
 		// System.out.println("test");
