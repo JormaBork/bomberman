@@ -23,14 +23,13 @@ import bombermanGui.BombermanBorkKnebel.bombermanGui;
 
 public class Player extends Thread {
 
-	//Variablen
+	// Variablen
 	private BufferedImage playerImage;
 	private Graphics g;
 	private Vector<Integer> keysPressed;
 	public int playerXPos, playerYPos, whichPlayer, stepSize = 1;
-	
-	
 
+	// Konstruktor
 	public Player(String name, int x, int y, String img, int whichPlayer, Vector<Integer> keysPressed) {
 		super();
 		this.playerYPos = y;
@@ -44,7 +43,6 @@ public class Player extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		BombermanBorkKnebel.bombermanGui.playerList.add(this);
 	}
 
@@ -81,13 +79,15 @@ public class Player extends Thread {
 		this.g = g;
 	}
 
+	// Methode zum Ablegen einer Bombe inklusive Starten des dazugehoerigen
+	// Threads
 	public void drawBomb() {
 		Bomb bombe = new Bomb(this.playerXPos, this.playerYPos);
 		new Thread(bombe).start();
 	}
 
 	/*
-	 * Die Update-Funktion lässt den Spielstand um eine bestimmte Zeitspanne
+	 * Die Update-Funktion laesst den Spielstand um eine bestimmte Zeitspanne
 	 * (period) voranschreiten, wobei Spielregeln/-logik implementiert und
 	 * Tastatureingaben verarbeitet werden.
 	 */
@@ -96,8 +96,13 @@ public class Player extends Thread {
 		// über alle gedrückten Tasten iterieren
 		int pressKey = 0;
 
+		// Entscheidung, welcher Spieler welche Tasten nutzt
 		if (this.whichPlayer == 1) {
 			for (int key : keysPressed) {
+
+				// Für die Kollisionsabfrage wird die Position des Players in
+				// ein Point-Objekt geschrieben, welches dann je nach Taste um
+				// die Schrittweite in die gewuenschte Richtung veraendert wird
 
 				Point newPosition = new Point(this.playerXPos, this.playerYPos);
 
@@ -114,17 +119,20 @@ public class Player extends Thread {
 					newPosition = new Point(this.playerXPos + stepSize, this.playerYPos);
 				}
 
+				// Anlegen einer Liste mit den Punkten aller Waende, Boxes und
+				// Player fuer die Kollisionsabfrage
 				ArrayList<Point> allBoxes = new ArrayList<>();
 				allBoxes.addAll(BombermanBorkKnebel.bombermanGui.wallPositionListInside);
 				for (Box b : BombermanBorkKnebel.bombermanGui.boxList) {
 					allBoxes.add(new Point(b.x, b.y));
-				for(Player p: BombermanBorkKnebel.bombermanGui.playerList){
-					if(p!=this){
-						allBoxes.add(new Point(p.playerXPos,p.playerYPos));
+					for (Player p : BombermanBorkKnebel.bombermanGui.playerList) {
+						if (p != this) {
+							allBoxes.add(new Point(p.playerXPos, p.playerYPos));
+						}
 					}
 				}
-				}
 
+				// Kollisionsabfrage ueber die Panel-Hoehe und -Tiefe sowie die Liste
 				if (newPosition.x > 25 && newPosition.x + 20 < BombermanBorkKnebel.pBombermanGui.WIDTH - 25) {
 					if (newPosition.y > 25 && newPosition.y + 20 < BombermanBorkKnebel.pBombermanGui.HEIGHT - 25) {
 						boolean found = false;
@@ -168,13 +176,12 @@ public class Player extends Thread {
 				allBoxes.addAll(BombermanBorkKnebel.bombermanGui.wallPositionListInside);
 				for (Box b : BombermanBorkKnebel.bombermanGui.boxList) {
 					allBoxes.add(new Point(b.x, b.y));
-				for(Player p: BombermanBorkKnebel.bombermanGui.playerList){
-					if(p!=this){
-						allBoxes.add(new Point(p.playerXPos,p.playerYPos));
+					for (Player p : BombermanBorkKnebel.bombermanGui.playerList) {
+						if (p != this) {
+							allBoxes.add(new Point(p.playerXPos, p.playerYPos));
+						}
 					}
 				}
-				}
-
 
 				if (newPosition.x > 25 && newPosition.x + 20 < BombermanBorkKnebel.pBombermanGui.WIDTH - 25) {
 					if (newPosition.y > 25 && newPosition.y + 20 < BombermanBorkKnebel.pBombermanGui.HEIGHT - 25) {

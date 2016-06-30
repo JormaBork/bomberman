@@ -131,14 +131,6 @@ public class Bomb implements Runnable {
                endGame.dispose();
             }
         });
-        
-//		JButton btnStartGame = new JButton("Start Game");
-//		btnStartGame.setHorizontalAlignment(SwingConstants.LEFT);
-//		endControlPanel.add(btnStartGame);
-//		btnStartGame.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//			}
-//		});
 	}
 
 	@Override
