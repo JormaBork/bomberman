@@ -41,7 +41,7 @@ public class BombermanBorkKnebel {
 		// COM
 
 		private static final long serialVersionUID = 1L;
-		Point playerPosition = new Point(25, 25);
+//		Point playerPosition = new Point(25, 25);
 		public static ArrayList<Point> wallPositionListOutside = new ArrayList<>();
 		public static ArrayList<Point> wallPositionListInside = new ArrayList<>();
 		public static ArrayList<Bomb> bombList = new ArrayList<>();
@@ -238,7 +238,6 @@ public class BombermanBorkKnebel {
 			// Figuren zeichnen
 			for(Player p : playerList){
 			g.drawImage(p.getImg(), p.getX(), p.getY(), 20, 20, null);
-//			g.drawImage(player2.getImg(), player2.getX(), player2.getY(), 20, 20, null);
 			}
 			// Bomben zeichnen
 			for (Bomb bomb : bombList) {
@@ -246,16 +245,25 @@ public class BombermanBorkKnebel {
 			}
 
 			// Boxen zeichnen
-			for (Box box : boxList) {
-				g.drawImage(box.getBoxImage(), box.x, box.y, 25, 25, null);
+			try {
+				for (Box box : boxList) {
+					g.drawImage(box.getBoxImage(), box.x, box.y, 25, 25, null);
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
 			}
 
 			// Explosionen zeichnen
-			if(explosionList!=null){
-			for (Explosion ex : explosionList){
-				g.drawImage(ex.getFireImage(), ex.x, ex.y, 20,20, null);
+			try {
+				if(explosionList!=null){
+					for (Explosion ex : explosionList){
+						g.drawImage(ex.getFireImage(), ex.x, ex.y, 20,20, null);
+					}
+					}
+			} catch (Exception e) {
+				
 			}
-			}
+			
 			
 			if (counter == 0) {
 				for (Point position : wallPositionListOutside) {
@@ -405,7 +413,7 @@ public class BombermanBorkKnebel {
 		f.pack();
 		f.setVisible(true);
 
-		Timer timer = new Timer(1, new ActionListener() {
+		Timer timer = new Timer(3, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				pBombermanGui.player1.update();

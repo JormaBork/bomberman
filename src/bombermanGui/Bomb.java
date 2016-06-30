@@ -94,11 +94,11 @@ public class Bomb implements Runnable {
 			if (!(p.x + 25 < left || p.x > right)) {
 				if (!(p.y + 25 < top || p.y > bottom)) {
 					pToDelete.add(p);
+					System.out.println("Game Over");
 				}
 			}
 		}
 		BombermanBorkKnebel.bombermanGui.playerList.removeAll(pToDelete);
-		System.out.println("Game Over");
 	}
 
 	@Override
