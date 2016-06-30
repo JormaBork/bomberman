@@ -44,6 +44,7 @@ public class Player extends Thread {
 			e.printStackTrace();
 		}
 		BombermanBorkKnebel.bombermanGui.playerList.add(this);
+		BombermanBorkKnebel.bombermanGui.playerRemove.add(this);
 	}
 
 	@Override
