@@ -34,57 +34,54 @@ import org.json.simple.parser.JSONParser;
 
 public class BombermanBorkKnebel {
 
+	// Deklarieren eines Objekts der Klasse bombermanGui (dient als JPanel) und des JFrames
 	public static bombermanGui pBombermanGui;
+	public static JFrame bomberFrame;
 
+	// Klasse bombermanGui
 	public static class bombermanGui extends JPanel implements KeyEventDispatcher {
-
-		// COM
-
 		private static final long serialVersionUID = 1L;
-//		Point playerPosition = new Point(25, 25);
+
+		// Variablen
+		final public static int WIDTH = 775;
+		final public static int HEIGHT = 375;
+
+		public BufferedImage wallImage, woodImage, tntImage, background;
+		public BufferedImage imageDestroyable;
+		public Player player1, player2;
+		public boolean rich = false;
+		public boolean end = false;
+		public Vector<Integer> keysPressed = new Vector<>(20);
+		int counter = 0;
+
+		// Listen
 		public static ArrayList<Point> wallPositionListOutside = new ArrayList<>();
 		public static ArrayList<Point> wallPositionListInside = new ArrayList<>();
 		public static ArrayList<Bomb> bombList = new ArrayList<>();
 		public static ArrayList<Box> boxList = new ArrayList<>();
 		public static ArrayList<Explosion> explosionList = new ArrayList<>();
 		public static ArrayList<Player> playerList = new ArrayList<>();
-		Point tntPOS = new Point(6, 6);
-		// Point doorPosition = new Point(0, 5);
-		Point[] snakePositions = { new Point(30, 2), null, null, null, null };
-		Point wallPosition = new Point();
-		BufferedImage wallImage, woodImage, tntImage, background;
-		BufferedImage imageDestroyable;
-		Player player1, player2;
-		boolean rich = false;
-		boolean end = false;
-		final public static int WIDTH = 775;
-		final public static int HEIGHT = 375;
-		private Vector<Integer> keysPressed = new Vector<>(20);
-		int counter = 0;
 
+		// Konstruktor bombermanGui
 		bombermanGui() {
+
+			// Grundlegende Rahmeneinstellungen und Hinzufügen des
+			// KeyEventDispatcher
 			setPreferredSize(new Dimension(WIDTH, HEIGHT));
 			setFocusable(true);
+			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
+
+			// FÜllen der Listen für äußere Wände, innere Wände und Boxen
 			fillWallPositionListOutside();
 			fillWallPositionListInside();
 			fillBoxList();
 
-			player1 = new Player("player1", readJson("player1").get(0), readJson("player1").get(1),
-					"src/images/creeper.png", 1, keysPressed);
-			player1.start();
-			player2 = new Player("player2", readJson("player2").get(0), readJson("player2").get(1),
-					"src/images/creeperBlue.png", 2, keysPressed);
-			player2.start();
-
-			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
-
+			// Zeichnen der Bilder für Wände, Boxen, Bomben und Hintergrund
 			try {
 				wallImage = ImageIO.read(new File("src/images/wall.png"));
 				woodImage = ImageIO.read(new File("src/images/wood.png"));
 				tntImage = ImageIO.read(new File("src/images/tnt.png"));
 
-				// creeperImage =
-				// ImageIO.read(BombermanBorkKnebel.class.getResourceAsStream("creeper.png"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -97,15 +94,45 @@ public class BombermanBorkKnebel {
 			for (Point position : wallPositionListInside) {
 				background.getGraphics().drawImage(wallImage, position.x, position.y, null);
 			}
+
+			// Initialisieren der zwei Player (inklusive Abfrage der aktuellen
+			// Position aus der Json-Datei)
+			player1 = new Player("player1", readJson("player1").get(0), readJson("player1").get(1),
+					"src/images/creeper.png", 1, keysPressed);
+			player1.start();
+			player2 = new Player("player2", readJson("player2").get(0), readJson("player2").get(1),
+					"src/images/creeperBlue.png", 2, keysPressed);
+			player2.start();
 		}
-		
-		public static void fillExplosionList(int x, int y){
-			explosionList.add(new Explosion(x,y));
-			explosionList.add(new Explosion(x+25,y));
-			explosionList.add(new Explosion(x-25,y));
-			explosionList.add(new Explosion(x,y+25));
-			explosionList.add(new Explosion(x,y-25));
-			
+
+		// Methoden zum befüllen der Listen (Wände, xplosionen, Boxen)
+		public void fillWallPositionListOutside() {
+			for (int y = 0; y < HEIGHT; y += 25) {
+				wallPositionListOutside.add(new Point(0, y));
+				wallPositionListOutside.add(new Point(WIDTH - 25, y));
+			}
+			for (int x = 0; x < WIDTH; x += 25) {
+				wallPositionListOutside.add(new Point(x, 0));
+				wallPositionListOutside.add(new Point(x, HEIGHT - 25));
+			}
+		}
+
+		public void fillWallPositionListInside() {
+			// Die Wände innerhalb des Spielfeldes
+			for (int y = 0; y < HEIGHT; y += 50) {
+				for (int x = 0; x < WIDTH; x += 50) {
+					wallPositionListInside.add(new Point(x, y));
+				}
+			}
+		}
+
+		public static void fillExplosionList(int x, int y) {
+			explosionList.add(new Explosion(x, y));
+			explosionList.add(new Explosion(x + 25, y));
+			explosionList.add(new Explosion(x - 25, y));
+			explosionList.add(new Explosion(x, y + 25));
+			explosionList.add(new Explosion(x, y - 25));
+
 		}
 
 		public void fillBoxList() {
@@ -122,24 +149,13 @@ public class BombermanBorkKnebel {
 				do {
 					int rndX1 = (int) (Math.random() * (boxRangeLength));
 					rndX = maxBoxRange.x + (rndX1 - (rndX1 % 25));
-
 					int rndY1 = (int) (Math.random() * (boxRangeHeight));
 					rndY = maxBoxRange.y + (rndY1 - (rndY1 % 25));
-
-					// while (rndX % 25 != 0) {
-					// rndX = maxBoxRange.x // Eine Zahl die genau auf einer
-					// + (int) (Math.random() * ((maxBoxRange.x + boxRangeLength
-					// - maxBoxRange.x) + 1));
-					// }
-					// while (rndY % 25 != 0) {
-					// rndY = maxBoxRange.y // Eine Zahl die genau auf einer
-					// + (int) (Math.random() * ((maxBoxRange.y + boxRangeHeight
-					// - maxBoxRange.y) + 1));
-					// }
 					boxKoordinates = new Point(rndX, rndY);
 
 				} while (existsInWallList(wallPositionListOutside, boxKoordinates)
-						|| existsInBoxList(boxList, boxKoordinates)||existsInWallList(wallPositionListInside, boxKoordinates)) ;
+						|| existsInBoxList(boxList, boxKoordinates)
+						|| existsInWallList(wallPositionListInside, boxKoordinates));
 
 				Box b = new Box(boxCount, boxKoordinates.x, boxKoordinates.y);
 				boxList.add(b);
@@ -148,6 +164,8 @@ public class BombermanBorkKnebel {
 			}
 		}
 
+		// Hilfsmethoden, damit Boxen nicht über Wände oder andere Boxen gelegt
+		// werden
 		private boolean existsInWallList(ArrayList<Point> list, Point p) {
 			boolean found = false;
 			for (Point pTmp : list) {
@@ -170,6 +188,7 @@ public class BombermanBorkKnebel {
 			return found;
 		}
 
+		// Methoden zum Speichern und Laden über Json-Datei
 		@SuppressWarnings("unchecked")
 		public void writeJson(int x, int y, int a, int b) {
 
@@ -231,14 +250,27 @@ public class BombermanBorkKnebel {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			
+
 			// Hintergund zeichnen
 			g.drawImage(background, 0, 0, null);
-			
-			// Figuren zeichnen
-			for(Player p : playerList){
-			g.drawImage(p.getImg(), p.getX(), p.getY(), 20, 20, null);
+
+			// Waende zeichnen (die Wände sind fest, daher nur einmalig zeichen
+			// --> Counter)
+			if (counter == 0) {
+				for (Point position : wallPositionListOutside) {
+					g.drawImage(wallImage, position.x, position.y, null);
+				}
+				for (Point position : wallPositionListInside) {
+					g.drawImage(wallImage, position.x, position.y, null);
+				}
 			}
+			counter++;
+
+			// Figuren zeichnen
+			for (Player p : playerList) {
+				g.drawImage(p.getImg(), p.getX(), p.getY(), 20, 20, null);
+			}
+
 			// Bomben zeichnen
 			for (Bomb bomb : bombList) {
 				g.drawImage(bomb.getBombImage(), bomb.x, bomb.y, 20, 20, null);
@@ -255,101 +287,63 @@ public class BombermanBorkKnebel {
 
 			// Explosionen zeichnen
 			try {
-				if(explosionList!=null){
-					for (Explosion ex : explosionList){
-						g.drawImage(ex.getFireImage(), ex.x, ex.y, 20,20, null);
+				if (explosionList != null) {
+					for (Explosion ex : explosionList) {
+						g.drawImage(ex.getFireImage(), ex.x, ex.y, 20, 20, null);
 					}
-					}
+				}
 			} catch (Exception e) {
-				
-			}
-			
-			
-			if (counter == 0) {
-				for (Point position : wallPositionListOutside) {
-					g.drawImage(wallImage, position.x, position.y, null);
-				}
-				for (Point position : wallPositionListInside) {
-					g.drawImage(wallImage, position.x, position.y, null);
-				}
-			}
-			counter++;
-		}
 
-		public void fillWallPositionListOutside() {
-			for (int y = 0; y < HEIGHT; y += 25) {
-				wallPositionListOutside.add(new Point(0, y));
-				wallPositionListOutside.add(new Point(WIDTH - 25, y));
-			}
-			for (int x = 0; x < WIDTH; x += 25) {
-				wallPositionListOutside.add(new Point(x, 0));
-				wallPositionListOutside.add(new Point(x, HEIGHT - 25));
-			}
-		}
-
-		public void fillWallPositionListInside() {
-			// Die Wände innerhalb des Spielfeldes
-			for (int y = 0; y < HEIGHT; y += 50) {
-				for (int x = 0; x < WIDTH; x += 50) {
-					wallPositionListInside.add(new Point(x, y));
-				}
 			}
 		}
 
 		@Override
 		public boolean dispatchKeyEvent(KeyEvent e) {
 			// Im Gegensatz zu KeyListener gibt es beim KeyEventDispatcher nur
-			// eine Methode fr
-			// alle KeyEvents, daher mssen wir den Typ des Events selbst
+			// eine Methode fuer
+			// alle KeyEvents, daher muessen wir den Typ des Events selbst
 			// unterscheiden
 			if (e.getID() == KeyEvent.KEY_PRESSED) {
-				// Taste in die Liste der aktuell gedrckten Tasten schreiben,
+				// Taste in die Liste der aktuell gedrueckten Tasten schreiben,
 				// wenn sie noch nicht darin vorhanden ist (das Event
-				// kann mehrmals whrend des gerckthalten ausgelst werden).
+				// kann mehrmals whrend des Gedrueckthaltens ausgeloest werden).
 				if (!keysPressed.contains(e.getKeyCode())) {
 					keysPressed.add(e.getKeyCode());
 				}
 			} else if (e.getID() == KeyEvent.KEY_RELEASED) {
-				// Taste wieder aus der Liste entfernen; manuelles boxen,
-				// damit die richtige remove-Funktion aufgerufen wird.
+				// Taste wieder aus der Liste entfernen
 				keysPressed.remove((Integer) e.getKeyCode());
 			}
-
-			return true; // nichts weiter mit dem KeyEvent machen
+			// nichts weiter mit dem KeyEvent machen
+			return true;
 		}
 
 	}
 
 	public static void main(String[] args) {
-		JFrame f = new JFrame("BOMBERMAN");
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// Anlegen des JFrames
+		bomberFrame = new JFrame("BOMBERMAN");
+		bomberFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		// f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); //Statt
-		// EXIT_ON_CLOSE unseren eigenen WindowListener verwenden
-		// f.addWindowListener(new WindowAdapter() {
-		// @Override
-		// public void windowClosing(WindowEvent e) {
-		// KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(pBombermanGui);
-		// //KeyStrokes2.this.dispose();
-		// System.exit(0);
-		// }
-		// });
-
+		// Initialisierung und Hinzufügen des Spiel-JPanels
 		pBombermanGui = new bombermanGui();
-		f.getContentPane().add(pBombermanGui);
+		bomberFrame.getContentPane().add(pBombermanGui);
 
+		// Initialisierung und Hinzufügen Control-JPanels
 		JPanel controlPanel = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) controlPanel.getLayout();
-		f.getContentPane().add(controlPanel, BorderLayout.SOUTH);
+		bomberFrame.getContentPane().add(controlPanel, BorderLayout.SOUTH);
 
-		JButton btnStartGame = new JButton("Start Game");
-		btnStartGame.setHorizontalAlignment(SwingConstants.LEFT);
-		controlPanel.add(btnStartGame);
-		btnStartGame.addActionListener(new ActionListener() {
+		// Hinzufügen der Buttons inklusive Funktion für Laden & Speichern (Lokal + Remote)
+		JButton btnSaveGame = new JButton("Save Local");
+		controlPanel.add(btnSaveGame);
+		btnSaveGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				pBombermanGui.writeJson(pBombermanGui.player1.getX(), pBombermanGui.player1.getY(),
+						pBombermanGui.player2.getX(), pBombermanGui.player2.getY());
 			}
 		});
-
+		
 		JButton btnLoadGame = new JButton("Load Local");
 		controlPanel.add(btnLoadGame);
 		btnLoadGame.addActionListener(new ActionListener() {
@@ -363,21 +357,6 @@ public class BombermanBorkKnebel {
 						pBombermanGui.readJson("player2").get(1), "src/images/creeperBlue.png", 2,
 						pBombermanGui.keysPressed);
 				pBombermanGui.player2.start();
-
-				// pBombermanGui.paintComponent(g);
-				// g.drawImage(player1.getImg(), player1.getX(), player1.getY(),
-				// 20, 20, null);
-				// g.drawImage(player2.getImg(), player2.getX(), player2.getY(),
-				// 20, 20, null);
-			}
-		});
-
-		JButton btnSaveGame = new JButton("Save Local");
-		controlPanel.add(btnSaveGame);
-		btnSaveGame.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				pBombermanGui.writeJson(pBombermanGui.player1.getX(), pBombermanGui.player1.getY(),
-						pBombermanGui.player2.getX(), pBombermanGui.player2.getY());
 			}
 		});
 
@@ -410,9 +389,12 @@ public class BombermanBorkKnebel {
 				pBombermanGui.player2.start();
 			}
 		});
-		f.pack();
-		f.setVisible(true);
+		
+		//Frame-Size wird gesetzt
+		bomberFrame.pack();
+		bomberFrame.setVisible(true);
 
+		//Timer Initialisieren und starten, Methoden für Bewegung (Player.update()) und Repaint
 		Timer timer = new Timer(3, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -422,6 +404,5 @@ public class BombermanBorkKnebel {
 			}
 		});
 		timer.start();
-
 	}
 }
