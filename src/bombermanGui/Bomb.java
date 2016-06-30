@@ -13,6 +13,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import bombermanGui.BombermanBorkKnebel.bombermanGui;
+
 public class Bomb implements Runnable {
 
 	int bombNumber, x, y;
@@ -128,7 +130,17 @@ public class Bomb implements Runnable {
         restart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-               endGame.dispose();
+            	endGame.dispose();
+            	bombermanGui.playerList.removeAll(bombermanGui.playerRemove);
+            	BombermanBorkKnebel.pBombermanGui.player1 = new Player("player1", BombermanBorkKnebel.pBombermanGui.readJson("player1").get(0),
+            			BombermanBorkKnebel.pBombermanGui.readJson("player1").get(1), "src/images/creeper.png", 1,
+            			BombermanBorkKnebel.pBombermanGui.keysPressed);
+            	BombermanBorkKnebel.pBombermanGui.player1.start();
+
+            	BombermanBorkKnebel.pBombermanGui.player2 = new Player("player2", BombermanBorkKnebel.pBombermanGui.readJson("player2").get(0),
+            			BombermanBorkKnebel.pBombermanGui.readJson("player2").get(1), "src/images/creeperBlue.png", 2,
+            			BombermanBorkKnebel.pBombermanGui.keysPressed);
+            	BombermanBorkKnebel.pBombermanGui.player2.start();
             }
         });
         

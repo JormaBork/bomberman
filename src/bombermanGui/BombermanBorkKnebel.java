@@ -61,6 +61,7 @@ public class BombermanBorkKnebel {
 		public static ArrayList<Box> boxList = new ArrayList<>();
 		public static ArrayList<Explosion> explosionList = new ArrayList<>();
 		public static ArrayList<Player> playerList = new ArrayList<>();
+		public static ArrayList<Player> playerRemove = new ArrayList<>();
 
 		// Konstruktor bombermanGui
 		bombermanGui() {
@@ -348,6 +349,9 @@ public class BombermanBorkKnebel {
 		controlPanel.add(btnLoadGame);
 		btnLoadGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				bombermanGui.playerList.removeAll(bombermanGui.playerRemove);
+				
 				pBombermanGui.player1 = new Player("player1", pBombermanGui.readJson("player1").get(0),
 						pBombermanGui.readJson("player1").get(1), "src/images/creeper.png", 1,
 						pBombermanGui.keysPressed);
@@ -376,6 +380,8 @@ public class BombermanBorkKnebel {
 		btnLoadRemote.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
+				bombermanGui.playerList.removeAll(bombermanGui.playerRemove);
+				
 				pBombermanGui.player1 = new Player("player1",
 						ConnectToDatabase.getPositionFromDatabase("player1").get(0),
 						ConnectToDatabase.getPositionFromDatabase("player1").get(1), "src/images/creeper.png", 1,

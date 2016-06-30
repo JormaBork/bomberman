@@ -45,6 +45,7 @@ public class Player extends Thread {
 		}
 
 		BombermanBorkKnebel.bombermanGui.playerList.add(this);
+		BombermanBorkKnebel.bombermanGui.playerRemove.add(this);
 	}
 
 	@Override
