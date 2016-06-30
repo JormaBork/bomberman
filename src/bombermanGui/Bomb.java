@@ -1,18 +1,17 @@
 package bombermanGui;
 
-import java.awt.Image;
-import java.awt.Point;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-
-import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class Bomb implements Runnable {
 
@@ -94,11 +93,52 @@ public class Bomb implements Runnable {
 			if (!(p.x + 25 < left || p.x > right)) {
 				if (!(p.y + 25 < top || p.y > bottom)) {
 					pToDelete.add(p);
-					System.out.println("Game Over");
+					endGameScreen();
 				}
 			}
 		}
 		BombermanBorkKnebel.bombermanGui.playerList.removeAll(pToDelete);
+	}
+	
+	public static void endGameScreen(){
+		JFrame endGame = new JFrame();
+		JPanel endControlPanel = new JPanel();
+		JButton restart = new JButton();
+		restart.setText("restart");
+		JButton exit = new JButton();
+		exit.setText("exit");
+		
+		endGame.getContentPane().add(endControlPanel, BorderLayout.SOUTH);
+		
+		endControlPanel.add(exit);
+		endGame.pack();
+		endGame.setVisible(true);
+		exit.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				endGame.dispose();
+				BombermanBorkKnebel.bomberFrame.dispose();
+			}
+		});
+		endControlPanel.add(restart);
+		endGame.pack();
+		endGame.setVisible(true);
+
+        restart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+               endGame.dispose();
+            }
+        });
+        
+//		JButton btnStartGame = new JButton("Start Game");
+//		btnStartGame.setHorizontalAlignment(SwingConstants.LEFT);
+//		endControlPanel.add(btnStartGame);
+//		btnStartGame.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//			}
+//		});
 	}
 
 	@Override
