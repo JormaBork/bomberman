@@ -1,23 +1,15 @@
 package bombermanGui;
 
+//Imports
 import java.awt.Graphics;
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
-
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 import bombermanGui.BombermanBorkKnebel.bombermanGui;
 
@@ -120,12 +112,12 @@ public class Player extends Thread {
 					newPosition = new Point(this.playerXPos + stepSize, this.playerYPos);
 				}
 
-				// Anlegen einer Liste mit den Punkten aller Waende, Boxes und
-				// Player fuer die Kollisionsabfrage
+				// Anlegen einer Liste mit den Punkten aller Waende, Boxes
+				// und Player fuer die Kollisionsabfrage
 				ArrayList<Point> allBoxes = new ArrayList<>();
 				allBoxes.addAll(BombermanBorkKnebel.bombermanGui.wallPositionListInside);
 				for (Box b : BombermanBorkKnebel.bombermanGui.boxList) {
-					allBoxes.add(new Point(b.x, b.y));
+					allBoxes.add(new Point(b.getX(), b.getY()));
 					for (Player p : BombermanBorkKnebel.bombermanGui.playerList) {
 						if (p != this) {
 							allBoxes.add(new Point(p.playerXPos, p.playerYPos));
@@ -133,9 +125,10 @@ public class Player extends Thread {
 					}
 				}
 
-				// Kollisionsabfrage ueber die Panel-Hoehe und -Tiefe sowie die Liste
-				if (newPosition.x > 25 && newPosition.x + 20 < BombermanBorkKnebel.pBombermanGui.WIDTH - 25) {
-					if (newPosition.y > 25 && newPosition.y + 20 < BombermanBorkKnebel.pBombermanGui.HEIGHT - 25) {
+				// Kollisionsabfrage ueber die Panel-Hoehe und -Tiefe sowie die
+				// Liste
+				if (newPosition.x > 25 && newPosition.x + 20 < bombermanGui.WIDTH - 25) {
+					if (newPosition.y > 25 && newPosition.y + 20 < bombermanGui.HEIGHT - 25) {
 						boolean found = false;
 						for (Point p : allBoxes) {
 							if (!(newPosition.x + 20 < p.x || newPosition.x > p.x + 25)) {
@@ -176,7 +169,7 @@ public class Player extends Thread {
 				ArrayList<Point> allBoxes = new ArrayList<>();
 				allBoxes.addAll(BombermanBorkKnebel.bombermanGui.wallPositionListInside);
 				for (Box b : BombermanBorkKnebel.bombermanGui.boxList) {
-					allBoxes.add(new Point(b.x, b.y));
+					allBoxes.add(new Point(b.getX(), b.getY()));
 					for (Player p : BombermanBorkKnebel.bombermanGui.playerList) {
 						if (p != this) {
 							allBoxes.add(new Point(p.playerXPos, p.playerYPos));
@@ -184,8 +177,8 @@ public class Player extends Thread {
 					}
 				}
 
-				if (newPosition.x > 25 && newPosition.x + 20 < BombermanBorkKnebel.pBombermanGui.WIDTH - 25) {
-					if (newPosition.y > 25 && newPosition.y + 20 < BombermanBorkKnebel.pBombermanGui.HEIGHT - 25) {
+				if (newPosition.x > 25 && newPosition.x + 20 < bombermanGui.WIDTH - 25) {
+					if (newPosition.y > 25 && newPosition.y + 20 < bombermanGui.HEIGHT - 25) {
 						boolean found = false;
 						for (Point p : allBoxes) {
 							if (!(newPosition.x + 20 < p.x || newPosition.x > p.x + 25)) {

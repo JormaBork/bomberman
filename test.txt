@@ -1,1 +1,0 @@
-{"vorname":"Paul","nachname":"Schmitz","alter":14,"musik":[{"stil":"rock","band":"U2"},{"stil":"metal","band":"Black Sabbath"}],"hungrig":true}

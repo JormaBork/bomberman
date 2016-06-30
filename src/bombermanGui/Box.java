@@ -1,24 +1,26 @@
 package bombermanGui;
 
+//Imports
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 
 public class Box implements Runnable {
-	int boxNumber, x, y;
-	BufferedImage boxImage;
 
+	// Variablen
+	private int boxNumber, x, y;
+	private BufferedImage boxImage;
+
+	// Konstruktor
 	public Box(int b, int x, int y) {
-		
+
 		try {
 			boxImage = ImageIO.read(new File("src/images/wood.png"));
-		} 
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		this.boxNumber = b;
 		this.x = x;
 		this.y = y;
@@ -57,18 +59,7 @@ public class Box implements Runnable {
 		this.boxImage = boxImage;
 	}
 
-	/*
-	 * Bei Eintritt auf Wasserrose wird Timer gestartet, nach 3 Sekunden
-	 * verschwindet Sie und Spieler stirbt
-	 */
 	@Override
 	public void run() {
-//		try {
-//			Thread.sleep(3000);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-//		
-//		BombermanBorkKnebel.bombermanGui.bombList.remove(this);
 	}
 }

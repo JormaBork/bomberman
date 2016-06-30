@@ -1,5 +1,6 @@
 package bombermanGui;
 
+//Imports
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,19 +8,19 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import bombermanGui.BombermanBorkKnebel.bombermanGui;
 
 public class Bomb implements Runnable {
+	
+	//Variablen
+	private int bombNumber, x, y;
+	private BufferedImage bombImage;
 
-	int bombNumber, x, y;
-	BufferedImage bombImage;
-
+	//Konstruktor
 	public Bomb(int x, int y) {
 
 		try {
@@ -27,7 +28,6 @@ public class Bomb implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		this.x = x;
 		this.y = y;
 		BombermanBorkKnebel.bombermanGui.bombList.add(this);
@@ -65,6 +65,7 @@ public class Bomb implements Runnable {
 		this.bombImage = bombImage;
 	}
 
+	//Methoden zum Sprengen von Boxen und Playern
 	public void removeBox() {
 
 		int left = this.x - 25;
@@ -74,8 +75,8 @@ public class Bomb implements Runnable {
 
 		ArrayList<Box> toDelete = new ArrayList<>();
 		for (Box b : BombermanBorkKnebel.bombermanGui.boxList) {
-			if (!(b.x + 25 < left || b.x > right)) {
-				if (!(b.y + 25 < top || b.y > bottom)) {
+			if (!(b.getX() + 25 < left || b.getX() > right)) {
+				if (!(b.getY() + 25 < top || b.getY() > bottom)) {
 					toDelete.add(b);
 				}
 			}
@@ -102,16 +103,22 @@ public class Bomb implements Runnable {
 		BombermanBorkKnebel.bombermanGui.playerList.removeAll(pToDelete);
 	}
 	
+	//Methode zum Aufrufen des Game Over-Bildschirms beim Sprengen eines Spielers
 	public static void endGameScreen(){
-		JFrame endGame = new JFrame();
+		
+		// Anlegen eines neuen Frames inklusive 2 Buttons
+		JFrame endGame = new JFrame("GAME OVER !");
 		JPanel endControlPanel = new JPanel();
+		
 		JButton restart = new JButton();
-		restart.setText("restart");
+		restart.setText("Restart");
+		
 		JButton exit = new JButton();
-		exit.setText("exit");
+		exit.setText("Exit Game");
 		
-		endGame.getContentPane().add(endControlPanel, BorderLayout.SOUTH);
+		endGame.getContentPane().add(endControlPanel, BorderLayout.CENTER);
 		
+		//Exit Game-Button hinzufuegen und Klick-Aktion definieren
 		endControlPanel.add(exit);
 		endGame.pack();
 		endGame.setVisible(true);
@@ -123,16 +130,16 @@ public class Bomb implements Runnable {
 				BombermanBorkKnebel.bomberFrame.dispose();
 			}
 		});
+		
+		//Restart-Button hinzufuegen und Klick-Aktion definieren
 		endControlPanel.add(restart);
-		endGame.pack();
-		endGame.setVisible(true);
 
         restart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
             	endGame.dispose();
             	bombermanGui.playerList.removeAll(bombermanGui.playerRemove);
-            	BombermanBorkKnebel.pBombermanGui.boxList.removeAll(BombermanBorkKnebel.pBombermanGui.boxRemove);
+            	bombermanGui.boxList.removeAll(bombermanGui.boxRemove);
             	BombermanBorkKnebel.pBombermanGui.fillBoxList();
             	BombermanBorkKnebel.pBombermanGui.player1 = new Player("player1", BombermanBorkKnebel.pBombermanGui.readJson("player1").get(0),
             			BombermanBorkKnebel.pBombermanGui.readJson("player1").get(1), "src/images/creeper.png", 1,
@@ -145,21 +152,32 @@ public class Bomb implements Runnable {
             	BombermanBorkKnebel.pBombermanGui.player2.start();
             }
         });
+        
+        //End Game-Frame anzeigen
+		endGame.setBounds(650, 450, 400, 400);
+		endGame.pack();
+		endGame.setVisible(true);
 	}
 
 	@Override
 	public void run() {
 		try {
+			//Thread wartet 3 Sekunden
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		
+		//Bombe legt neue Explosion an
 		Explosion ex = new Explosion(this.x, this.y);
 		new Thread(ex).start();
-		BombermanBorkKnebel.bombermanGui.fillExplosionList(ex.x, ex.y);
+		BombermanBorkKnebel.bombermanGui.fillExplosionList(ex.getX(), ex.getY());
 
+		//Bombe prüft Boxes und Spieler 
 		this.removeBox();
 		this.removePlayer();
+		
+		//Bombe wird aus der Liste entfernt
 		BombermanBorkKnebel.bombermanGui.bombList.remove(this);
 	}
 }

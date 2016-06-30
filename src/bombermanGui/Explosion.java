@@ -1,27 +1,20 @@
 package bombermanGui;
 
-import java.awt.Image;
-import java.awt.event.ActionListener;
+//Imports
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.Timer;
 
 import bombermanGui.BombermanBorkKnebel.bombermanGui;
 
 public class Explosion implements Runnable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	int x, y;
-	BufferedImage fireImage;
+	//Variablen
+	private int x, y;
+	private BufferedImage fireImage;
 
+	//Konstruktor
 	public Explosion(int x, int y) {
 
 		try {
@@ -32,6 +25,7 @@ public class Explosion implements Runnable {
 
 		this.x = x;
 		this.y = y;
+		BombermanBorkKnebel.bombermanGui.explosionList.add(this);
 	}
 
 	public int getX() {
@@ -61,10 +55,12 @@ public class Explosion implements Runnable {
 	@Override
 	public void run() {
 		try {
+			// Thread wartet eine Sekunde
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		//alle Explosionen werden wieder aus der Liste entfernt
 		BombermanBorkKnebel.bombermanGui.explosionList.removeAll(bombermanGui.explosionList);
 	}
 

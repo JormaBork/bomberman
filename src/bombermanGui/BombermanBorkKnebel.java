@@ -1,9 +1,9 @@
 package bombermanGui;
 
+//Imports
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
@@ -18,16 +18,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Vector;
-
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.Timer;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -183,7 +179,7 @@ public class BombermanBorkKnebel {
 		private boolean existsInBoxList(ArrayList<Box> list, Point p) {
 			boolean found = false;
 			for (Box b : list) {
-				if (new Point(b.x, b.y).equals(p)) {
+				if (new Point(b.getX(), b.getY()).equals(p)) {
 					found = true;
 					break;
 				}
@@ -226,7 +222,7 @@ public class BombermanBorkKnebel {
 			try {
 
 				// Pfad der .json datei
-				Object obj = parser.parse(new FileReader("test.json"));
+				Object obj = parser.parse(new FileReader("PlayerPositions.json"));
 
 				JSONObject jsonObject = (JSONObject) obj;
 
@@ -275,24 +271,28 @@ public class BombermanBorkKnebel {
 			}
 
 			// Bomben zeichnen
-			for (Bomb bomb : bombList) {
-				g.drawImage(bomb.getBombImage(), bomb.x, bomb.y, 20, 20, null);
+			try {
+				for (Bomb bomb : bombList) {
+					g.drawImage(bomb.getBombImage(), bomb.getX(), bomb.getY(), 20, 20, null);
+				}
+			} catch (Exception e) {
+				
 			}
-
+			
 			// Boxen zeichnen
 			try {
 				for (Box box : boxList) {
-					g.drawImage(box.getBoxImage(), box.x, box.y, 25, 25, null);
+					g.drawImage(box.getBoxImage(), box.getX(), box.getY(), 25, 25, null);
 				}
 			} catch (Exception e) {
-				// TODO: handle exception
+				
 			}
 
 			// Explosionen zeichnen
 			try {
 				if (explosionList != null) {
 					for (Explosion ex : explosionList) {
-						g.drawImage(ex.getFireImage(), ex.x, ex.y, 20, 20, null);
+						g.drawImage(ex.getFireImage(), ex.getX(), ex.getY(), 20, 20, null);
 					}
 				}
 			} catch (Exception e) {
@@ -325,7 +325,7 @@ public class BombermanBorkKnebel {
 
 	public static void main(String[] args) {
 		// Anlegen des JFrames
-		bomberFrame = new JFrame("BOMBERMAN");
+		bomberFrame = new JFrame("BOMBERMAN --- Minecraft-Style --- by Felix Knebel & Jorma Rolf Bork");
 		bomberFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Initialisierung und Hinzufügen des Spiel-JPanels
@@ -334,7 +334,6 @@ public class BombermanBorkKnebel {
 
 		// Initialisierung und Hinzufügen Control-JPanels
 		JPanel controlPanel = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) controlPanel.getLayout();
 		bomberFrame.getContentPane().add(controlPanel, BorderLayout.SOUTH);
 
 		// Hinzufügen der Buttons inklusive Funktion für Laden & Speichern (Lokal + Remote)
@@ -353,7 +352,7 @@ public class BombermanBorkKnebel {
 			public void actionPerformed(ActionEvent e) {
 				
 				bombermanGui.playerList.removeAll(bombermanGui.playerRemove);
-				pBombermanGui.boxList.removeAll(pBombermanGui.boxRemove);
+				bombermanGui.boxList.removeAll(bombermanGui.boxRemove);
 				pBombermanGui.fillBoxList();
 				pBombermanGui.player1 = new Player("player1", pBombermanGui.readJson("player1").get(0),
 						pBombermanGui.readJson("player1").get(1), "src/images/creeper.png", 1,
@@ -384,7 +383,7 @@ public class BombermanBorkKnebel {
 			public void actionPerformed(ActionEvent e) {
 
 				bombermanGui.playerList.removeAll(bombermanGui.playerRemove);
-				pBombermanGui.boxList.removeAll(pBombermanGui.boxRemove);
+				bombermanGui.boxList.removeAll(bombermanGui.boxRemove);
 				pBombermanGui.fillBoxList();
 				pBombermanGui.player1 = new Player("player1",
 						ConnectToDatabase.getPositionFromDatabase("player1").get(0),
@@ -401,6 +400,7 @@ public class BombermanBorkKnebel {
 		});
 		
 		//Frame-Size wird gesetzt
+		bomberFrame.setBounds(350, 250, bombermanGui.WIDTH, bombermanGui.HEIGHT);
 		bomberFrame.pack();
 		bomberFrame.setVisible(true);
 
