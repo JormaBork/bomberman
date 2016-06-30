@@ -59,6 +59,7 @@ public class BombermanBorkKnebel {
 		public static ArrayList<Point> wallPositionListInside = new ArrayList<>();
 		public static ArrayList<Bomb> bombList = new ArrayList<>();
 		public static ArrayList<Box> boxList = new ArrayList<>();
+		public static ArrayList<Box> boxRemove = new ArrayList<>();
 		public static ArrayList<Explosion> explosionList = new ArrayList<>();
 		public static ArrayList<Player> playerList = new ArrayList<>();
 		public static ArrayList<Player> playerRemove = new ArrayList<>();
@@ -160,6 +161,7 @@ public class BombermanBorkKnebel {
 
 				Box b = new Box(boxCount, boxKoordinates.x, boxKoordinates.y);
 				boxList.add(b);
+				boxRemove.add(b);
 				System.out.println("Box#" + (boxCount + 1) + " von " + boxAnzahl + " Boxen loaded");
 
 			}
@@ -351,7 +353,8 @@ public class BombermanBorkKnebel {
 			public void actionPerformed(ActionEvent e) {
 				
 				bombermanGui.playerList.removeAll(bombermanGui.playerRemove);
-				
+				pBombermanGui.boxList.removeAll(pBombermanGui.boxRemove);
+				pBombermanGui.fillBoxList();
 				pBombermanGui.player1 = new Player("player1", pBombermanGui.readJson("player1").get(0),
 						pBombermanGui.readJson("player1").get(1), "src/images/creeper.png", 1,
 						pBombermanGui.keysPressed);
@@ -381,7 +384,8 @@ public class BombermanBorkKnebel {
 			public void actionPerformed(ActionEvent e) {
 
 				bombermanGui.playerList.removeAll(bombermanGui.playerRemove);
-				
+				pBombermanGui.boxList.removeAll(pBombermanGui.boxRemove);
+				pBombermanGui.fillBoxList();
 				pBombermanGui.player1 = new Player("player1",
 						ConnectToDatabase.getPositionFromDatabase("player1").get(0),
 						ConnectToDatabase.getPositionFromDatabase("player1").get(1), "src/images/creeper.png", 1,

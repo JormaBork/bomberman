@@ -132,6 +132,8 @@ public class Bomb implements Runnable {
             public void actionPerformed(ActionEvent evt) {
             	endGame.dispose();
             	bombermanGui.playerList.removeAll(bombermanGui.playerRemove);
+            	BombermanBorkKnebel.pBombermanGui.boxList.removeAll(BombermanBorkKnebel.pBombermanGui.boxRemove);
+            	BombermanBorkKnebel.pBombermanGui.fillBoxList();
             	BombermanBorkKnebel.pBombermanGui.player1 = new Player("player1", BombermanBorkKnebel.pBombermanGui.readJson("player1").get(0),
             			BombermanBorkKnebel.pBombermanGui.readJson("player1").get(1), "src/images/creeper.png", 1,
             			BombermanBorkKnebel.pBombermanGui.keysPressed);
