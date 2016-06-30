@@ -23,17 +23,18 @@ import bombermanGui.BombermanBorkKnebel.bombermanGui;
 
 public class Player extends Thread {
 
-	int x, y;
+	//Variablen
 	private BufferedImage playerImage;
 	private Graphics g;
-	int stepSize = 1;
-	int whichPlayer;
-	Vector<Integer> keysPressed;
+	private Vector<Integer> keysPressed;
+	public int playerXPos, playerYPos, whichPlayer, stepSize = 1;
+	
+	
 
 	public Player(String name, int x, int y, String img, int whichPlayer, Vector<Integer> keysPressed) {
 		super();
-		this.y = y;
-		this.x = x;
+		this.playerYPos = y;
+		this.playerXPos = x;
 		this.whichPlayer = whichPlayer;
 		this.keysPressed = keysPressed;
 
@@ -57,19 +58,19 @@ public class Player extends Thread {
 	}
 
 	public int getX() {
-		return x;
+		return playerXPos;
 	}
 
 	public void setX(int x) {
-		this.x = x;
+		this.playerXPos = x;
 	}
 
 	public int getY() {
-		return y;
+		return playerYPos;
 	}
 
 	public void setY(int y) {
-		this.y = y;
+		this.playerYPos = y;
 	}
 
 	public Graphics getG() {
@@ -81,7 +82,7 @@ public class Player extends Thread {
 	}
 
 	public void drawBomb() {
-		Bomb bombe = new Bomb(this.x, this.y);
+		Bomb bombe = new Bomb(this.playerXPos, this.playerYPos);
 		new Thread(bombe).start();
 	}
 
@@ -98,19 +99,19 @@ public class Player extends Thread {
 		if (this.whichPlayer == 1) {
 			for (int key : keysPressed) {
 
-				Point newPosition = new Point(this.x, this.y);
+				Point newPosition = new Point(this.playerXPos, this.playerYPos);
 
 				if (key == KeyEvent.VK_UP) {
-					newPosition = new Point(this.x, this.y - stepSize);
+					newPosition = new Point(this.playerXPos, this.playerYPos - stepSize);
 				}
 				if (key == KeyEvent.VK_DOWN) {
-					newPosition = new Point(this.x, this.y + stepSize);
+					newPosition = new Point(this.playerXPos, this.playerYPos + stepSize);
 				}
 				if (key == KeyEvent.VK_LEFT) {
-					newPosition = new Point(this.x - stepSize, this.y);
+					newPosition = new Point(this.playerXPos - stepSize, this.playerYPos);
 				}
 				if (key == KeyEvent.VK_RIGHT) {
-					newPosition = new Point(this.x + stepSize, this.y);
+					newPosition = new Point(this.playerXPos + stepSize, this.playerYPos);
 				}
 
 				ArrayList<Point> allBoxes = new ArrayList<>();
@@ -119,7 +120,7 @@ public class Player extends Thread {
 					allBoxes.add(new Point(b.x, b.y));
 				for(Player p: BombermanBorkKnebel.bombermanGui.playerList){
 					if(p!=this){
-						allBoxes.add(new Point(p.x,p.y));
+						allBoxes.add(new Point(p.playerXPos,p.playerYPos));
 					}
 				}
 				}
@@ -136,8 +137,8 @@ public class Player extends Thread {
 							}
 						}
 						if (!found) {
-							this.x = newPosition.x;
-							this.y = newPosition.y;
+							this.playerXPos = newPosition.x;
+							this.playerYPos = newPosition.y;
 						}
 					}
 				}
@@ -150,18 +151,18 @@ public class Player extends Thread {
 		} else if (this.whichPlayer == 2) {
 			for (int key : keysPressed) {
 
-				Point newPosition = new Point(this.x, this.y);
+				Point newPosition = new Point(this.playerXPos, this.playerYPos);
 				if (key == KeyEvent.VK_W) {
-					newPosition = new Point(this.x, this.y - stepSize);
+					newPosition = new Point(this.playerXPos, this.playerYPos - stepSize);
 				}
 				if (key == KeyEvent.VK_S) {
-					newPosition = new Point(this.x, this.y + stepSize);
+					newPosition = new Point(this.playerXPos, this.playerYPos + stepSize);
 				}
 				if (key == KeyEvent.VK_A) {
-					newPosition = new Point(this.x - stepSize, this.y);
+					newPosition = new Point(this.playerXPos - stepSize, this.playerYPos);
 				}
 				if (key == KeyEvent.VK_D) {
-					newPosition = new Point(this.x + stepSize, this.y);
+					newPosition = new Point(this.playerXPos + stepSize, this.playerYPos);
 				}
 				ArrayList<Point> allBoxes = new ArrayList<>();
 				allBoxes.addAll(BombermanBorkKnebel.bombermanGui.wallPositionListInside);
@@ -169,7 +170,7 @@ public class Player extends Thread {
 					allBoxes.add(new Point(b.x, b.y));
 				for(Player p: BombermanBorkKnebel.bombermanGui.playerList){
 					if(p!=this){
-						allBoxes.add(new Point(p.x,p.y));
+						allBoxes.add(new Point(p.playerXPos,p.playerYPos));
 					}
 				}
 				}
@@ -187,8 +188,8 @@ public class Player extends Thread {
 							}
 						}
 						if (!found) {
-							this.x = newPosition.x;
-							this.y = newPosition.y;
+							this.playerXPos = newPosition.x;
+							this.playerYPos = newPosition.y;
 						}
 					}
 				}

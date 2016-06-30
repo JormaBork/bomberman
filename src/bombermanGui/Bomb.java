@@ -91,8 +91,8 @@ public class Bomb implements Runnable {
 
 		ArrayList<Player> pToDelete = new ArrayList<>();
 		for (Player p : BombermanBorkKnebel.bombermanGui.playerList) {
-			if (!(p.x + 25 < left || p.x > right)) {
-				if (!(p.y + 25 < top || p.y > bottom)) {
+			if (!(p.playerXPos + 25 < left || p.playerXPos > right)) {
+				if (!(p.playerYPos + 25 < top || p.playerYPos > bottom)) {
 					pToDelete.add(p);
 					System.out.println("Game Over");
 				}
