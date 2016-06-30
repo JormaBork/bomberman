@@ -74,8 +74,8 @@ public class Player extends Thread {
 
 	// Methode zum Ablegen einer Bombe inklusive Starten des dazugehoerigen
 	// Threads
-	public void drawBomb() {
-		Bomb bombe = new Bomb(this.playerXPos, this.playerYPos);
+	public void drawBomb(int which) {
+		Bomb bombe = new Bomb(this.playerXPos, this.playerYPos, which);
 		new Thread(bombe).start();
 	}
 
@@ -123,6 +123,11 @@ public class Player extends Thread {
 							allBoxes.add(new Point(p.playerXPos, p.playerYPos));
 						}
 					}
+					for(Bomb bo:BombermanBorkKnebel.bombermanGui.bombList){
+						if(bo.getWhichPlayer()==2){
+							allBoxes.add(new Point(bo.getX(),bo.getY()));
+						}
+					}
 				}
 
 				// Kollisionsabfrage ueber die Panel-Hoehe und -Tiefe sowie die
@@ -145,9 +150,9 @@ public class Player extends Thread {
 					}
 				}
 
-				if (key == KeyEvent.VK_B) {
+				if (key == KeyEvent.VK_NUMPAD5) {
 					pressKey = key;
-					this.drawBomb();
+					this.drawBomb(1);
 				}
 			}
 		} else if (this.whichPlayer == 2) {
@@ -175,6 +180,11 @@ public class Player extends Thread {
 							allBoxes.add(new Point(p.playerXPos, p.playerYPos));
 						}
 					}
+					for(Bomb bo:BombermanBorkKnebel.bombermanGui.bombList){
+						if(bo.getWhichPlayer()==1){
+							allBoxes.add(new Point(bo.getX(),bo.getY()));
+						}
+					}
 				}
 
 				if (newPosition.x > 25 && newPosition.x + 20 < bombermanGui.WIDTH - 25) {
@@ -196,7 +206,7 @@ public class Player extends Thread {
 				}
 				if (key == KeyEvent.VK_R) {
 					pressKey = key;
-					this.drawBomb();
+					this.drawBomb(2);
 				}
 			}
 

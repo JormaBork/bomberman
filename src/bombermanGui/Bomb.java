@@ -17,11 +17,11 @@ import bombermanGui.BombermanBorkKnebel.bombermanGui;
 public class Bomb implements Runnable {
 	
 	//Variablen
-	private int bombNumber, x, y;
+	private int whichPlayer, x, y;
 	private BufferedImage bombImage;
 
 	//Konstruktor
-	public Bomb(int x, int y) {
+	public Bomb(int x, int y, int which) {
 
 		try {
 			bombImage = ImageIO.read(new File("src/images/tnt.png"));
@@ -30,15 +30,12 @@ public class Bomb implements Runnable {
 		}
 		this.x = x;
 		this.y = y;
+		this.whichPlayer = which;
 		BombermanBorkKnebel.bombermanGui.bombList.add(this);
 	}
 
-	public int getBombNumber() {
-		return bombNumber;
-	}
-
-	public void setBombNumber(int bombNumber) {
-		this.bombNumber = bombNumber;
+	public int getWhichPlayer() {
+		return whichPlayer;
 	}
 
 	public int getX() {
