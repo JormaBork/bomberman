@@ -137,7 +137,7 @@ public class BombermanBorkKnebel {
 			final Point maxBoxRange = new Point(225, 25);
 			final int boxRangeLength = 300;
 			final int boxRangeHeight = 325;
-			final int boxAnzahl = 20;
+			final int boxAnzahl = 50;
 
 			for (int boxCount = 0; boxCount < boxAnzahl; boxCount++) {
 				int rndX = 0;
