@@ -1,5 +1,7 @@
 package bombermanGui;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 //Imports
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,12 +15,14 @@ public class Explosion implements Runnable {
 	//Variablen
 	private int x, y;
 	private BufferedImage fireImage;
+	private Image GIF;
 
 	//Konstruktor
 	public Explosion(int x, int y) {
 
 		try {
 			fireImage = ImageIO.read(new File("src/images/Fire_animated.gif"));
+			GIF = Toolkit.getDefaultToolkit().getImage("src/images/Fire_animated.gif");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -28,6 +32,10 @@ public class Explosion implements Runnable {
 		BombermanBorkKnebel.bombermanGui.explosionList.add(this);
 	}
 
+	public Image getGIF(){
+		return GIF;
+	}
+	
 	public int getX() {
 		return x;
 	}

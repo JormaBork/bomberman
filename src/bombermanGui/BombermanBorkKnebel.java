@@ -292,7 +292,8 @@ public class BombermanBorkKnebel {
 			try {
 				if (explosionList != null) {
 					for (Explosion ex : explosionList) {
-						g.drawImage(ex.getFireImage(), ex.getX(), ex.getY(), 20, 20, null);
+//						g.drawImage(ex.getFireImage(), ex.getX(), ex.getY(), 20, 20, null);
+						g.drawImage(ex.getGIF(), ex.getX(), ex.getY(), 20, 20, null);
 					}
 				}
 			} catch (Exception e) {
